@@ -72,7 +72,7 @@ export async function resetDatabase() {
     console.log("Database reset successful");
 }
 
-
+//TODO: Create getters from the data base for more specific things, such as all teams from a user, all pokemon information from a team, etc.
 
 //DEBUG FUNCTIONS: These should just be used to ensure that the tables are getting data correctly
 

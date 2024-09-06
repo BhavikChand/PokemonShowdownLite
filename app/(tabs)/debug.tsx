@@ -4,7 +4,7 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { debugGetAllUser, resetDatabase, startDBAndTables } from '@/components/db-functions/db-functions';
-import { generateFakeUsersDB } from '@/components/db-functions/db-generate-fakes';
+import { generateFakeDataDB } from '@/components/db-functions/db-generate-fakes';
 import * as SQLite from 'expo-sqlite'
 import { User } from '@/components/db-functions/db-types';
 
@@ -19,7 +19,7 @@ export default function HomeScreen() {
         }
     };
     
-    async function debugButtonViewDB(tableName: string){
+    const debugButtonViewDB = async (tableName: string) => {
         try {
             let db = await SQLite.openDatabaseAsync('Showdown');
             let query = `SELECT * FROM ${tableName}`;
@@ -36,10 +36,21 @@ export default function HomeScreen() {
             alert("there is an error");
         }
     }
+
     const debugButtonFakeUsers = async () => {
         try {
-            await generateFakeUsersDB();
-            alert('fake users made');
+            await generateFakeDataDB();
+            alert('fake data made, dont press this again! (reset db if you do)');
+        } catch (error) {
+            console.error('Error:', error)
+            alert("there is an error");
+        }
+    }
+
+    const debugButtonReset = async () => {
+        try {
+            await resetDatabase();
+            alert('data has been wiped, press on generate again');
         } catch (error) {
             console.error('Error:', error)
             alert("there is an error");
@@ -63,14 +74,13 @@ export default function HomeScreen() {
             </ThemedView>
 
             <Button title='StartDB' onPress={debugButtonCreateDB}/>
-            <Button title='Generate Fake Users' onPress={debugButtonFakeUsers}/>
-            <Button title='Show all users' onPress={() => debugButtonViewDB("user")} />
-            <Button title='Show all teams' onPress={() => debugButtonViewDB("teams")} />
-            <Button title='Show all pokemon' onPress={() => debugButtonViewDB("pokemon")} />
-            <Button title='Show all moves' onPress={() => debugButtonViewDB("moves")} />
-            <Button title='Show all pokemon stats' onPress={() => debugButtonViewDB("pokemon_stats")} />
-            <Button title='Reset Database' onPress={() => resetDatabase()} />
-
+            <Button title='Generate Fake Data' onPress={debugButtonFakeUsers}/>
+            <Button title='Show all users' onPress={() => debugButtonViewDB("user")} color={"grey"} />
+            <Button title='Show all teams' onPress={() => debugButtonViewDB("teams")} color={"grey"} />
+            <Button title='Show all pokemon' onPress={() => debugButtonViewDB("pokemon")} color={"grey"} />
+            <Button title='Show all moves' onPress={() => debugButtonViewDB("moves")} color={"grey"} />
+            <Button title='Show all pokemon stats' onPress={() => debugButtonViewDB("pokemon_stats")} color={"grey"} />
+            <Button title='Reset Database' onPress={debugButtonReset} color={"red"} />
 
         </ParallaxScrollView>
     );
