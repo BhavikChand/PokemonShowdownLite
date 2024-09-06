@@ -75,6 +75,7 @@ export async function resetDatabase() {
 //TODO: Create getters from the data base for more specific things, such as all teams from a user, all pokemon information from a team, etc.
 
 //DEBUG FUNCTIONS: These should just be used to ensure that the tables are getting data correctly
+//TODO: Remove these functions in a future PR once more proper functions are implemented.
 
 export async function debugGetAllUser(){
     let db = await SQLite.openDatabaseAsync('Showdown');
