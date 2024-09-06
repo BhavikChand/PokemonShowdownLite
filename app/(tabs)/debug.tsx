@@ -1,13 +1,15 @@
 import { Image, StyleSheet, Platform, Button, Pressable } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { debugViewAllUser, startDBAndTables } from '@/components/db-functions/db-functions';
-import { generateFakeUsersDB } from '@/components/db-functions/db-generate';
+import { debugGetAllUser, resetDatabase, startDBAndTables } from '@/components/db-functions/db-functions';
+import { generateFakeUsersDB } from '@/components/db-functions/db-generate-fakes';
+import * as SQLite from 'expo-sqlite'
+import { User } from '@/components/db-functions/db-types';
 
 export default function HomeScreen() {
+
     const debugButtonCreateDB = async () => {
         try {
             await startDBAndTables();
@@ -15,15 +17,20 @@ export default function HomeScreen() {
         } catch (error) {
             console.error('Error:', error);
         }
-    }
-    const debugButtonViewDB = async () => {
+    };
+    
+    async function debugButtonViewDB(tableName: string){
         try {
-            let allRows = await debugViewAllUser();
-            let string = 'Viewing users:\n';
-            for (const row of allRows) {
-                string += `${row.user_id}, ${row.username}, ${row.password}\n`; 
+            let db = await SQLite.openDatabaseAsync('Showdown');
+            let query = `SELECT * FROM ${tableName}`;
+            let allRows = await db.getAllAsync(query);
+
+            let outputString = `Viewing ${tableName}:\n`;
+
+            for (let row of allRows) {
+                outputString += `${JSON.stringify(row)}\n`;
             }
-            alert(string);
+            alert(outputString)
         } catch (error) {
             console.error('Error:', error )
             alert("there is an error");
@@ -57,7 +64,13 @@ export default function HomeScreen() {
 
             <Button title='StartDB' onPress={debugButtonCreateDB}/>
             <Button title='Generate Fake Users' onPress={debugButtonFakeUsers}/>
-            <Button title='Show all users' onPress={debugButtonViewDB} />
+            <Button title='Show all users' onPress={() => debugButtonViewDB("user")} />
+            <Button title='Show all teams' onPress={() => debugButtonViewDB("teams")} />
+            <Button title='Show all pokemon' onPress={() => debugButtonViewDB("pokemon")} />
+            <Button title='Show all moves' onPress={() => debugButtonViewDB("moves")} />
+            <Button title='Show all pokemon stats' onPress={() => debugButtonViewDB("pokemon_stats")} />
+            <Button title='Reset Database' onPress={() => resetDatabase()} />
+
 
         </ParallaxScrollView>
     );

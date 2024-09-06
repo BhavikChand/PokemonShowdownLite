@@ -5,5 +5,5 @@ export async function generateFakeUsersDB() {
 
     const result = await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'daspeedsta', 'qweerteee');
 
-
 }
+
