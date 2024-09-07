@@ -1,5 +1,11 @@
-class pokemon {
-    constructor(name, health, moves, attackDamage, pp) {
+class Pokemon {
+    name: string;
+    health: number;
+    moves: string[];
+    attackDamage: number[];
+    pp: number[];
+
+    constructor(name: string, health: number, moves: string[], attackDamage: number[], pp: number[]) {
         this.name = name;
         this.health = health;
         this.moves = moves;
@@ -7,56 +13,49 @@ class pokemon {
         this.pp = pp;
     }
 
-    attack(target, moveIndex) 
-    {
-        if (this.pp[moveIndex] > 0) 
-        {
+    attack(target: Pokemon, moveIndex: number): void {
+        if (this.pp[moveIndex] > 0) {
             console.log(`${this.name} attacks with ${this.moves[moveIndex]}!`);
             target.takeDamage(this.attackDamage[moveIndex]);
             this.pp[moveIndex]--;
-        } 
-        else 
-        {
+        } else {
             console.log(`${this.name} has no PP left for ${this.moves[moveIndex]}!`);
         }
     }
 
-    takeDamage(damage) 
-    {
+    takeDamage(damage: number): void {
         this.health -= damage;
         if (this.health < 0) this.health = 0;
         console.log(`${this.name} took ${damage} damage! Current health: ${this.health}`);
     }
 
-    displayStats() 
-    {
+    displayStats(): void {
         console.log(`Name: ${this.name}`);
         console.log(`Health: ${this.health}`);
-        for (let i = 0; i < this.moves.length; i++) 
-        {
+        for (let i = 0; i < this.moves.length; i++) {
             console.log(`Move ${i + 1}: ${this.moves[i]} (Damage: ${this.attackDamage[i]}, PP: ${this.pp[i]})`);
         }
     }
 
-    displayMoves() {
+    displayMoves(): void {
         console.log(`${this.name}'s available moves:`);
-        for (let i = 0; i < this.moves.length; i++) 
-        {
+        for (let i = 0; i < this.moves.length; i++) {
             console.log(`${i + 1}. ${this.moves[i]} (Damage: ${this.attackDamage[i]}, PP: ${this.pp[i]})`);
         }
     }
 
-    getHealth() {
+    getHealth(): number {
         return this.health;
     }
 
-    getPP(moveIndex) {
+    getPP(moveIndex: number): number {
         return this.pp[moveIndex];
     }
 
-    getName() {
+    getName(): string {
         return this.name;
     }
 }
 
-module.exports = pokemon;
+// Export the class for use in other modules
+export default Pokemon;

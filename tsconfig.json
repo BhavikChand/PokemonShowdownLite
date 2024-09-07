@@ -7,7 +7,11 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "moduleResolution": "node", // Added for Node module resolution
+    "esModuleInterop": true,    // Added for compatibility between CommonJS and ES Modules
+    "target": "es6",            // Optional: Ensures ES6 target (or higher)
+    "module": "commonjs"         // Optional: Use CommonJS as the module system
   },
   "include": [
     "**/*.ts",
