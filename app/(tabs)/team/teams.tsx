@@ -1,6 +1,7 @@
 import { UserContext } from '@/components/CurrentUser';
 import { getUserTeam } from '@/components/db-functions/db-functions';
 import { Team } from '@/components/db-functions/db-types';
+import { NewTeam } from '@/components/team-view/NewTeam';
 import { TeamBubble } from '@/components/team-view/TeamBubble';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -37,24 +38,28 @@ export default function TeamPage() {
           console.log(allRows[i].team_name)
           itemViews.push(
             <View key={allRows[i].team_id}>
-              <TeamBubble text={allRows[i].team_name} />
+              <TeamBubble text={allRows[i].team_name} teamId={allRows[i].team_id} />
             </View>
           );
         }
-        i = -1; 
-        while(itemViews.length < 3) {
+        // Populate fake slots so user can see grid pattern if they have no teams.
+        i = -1;
+        while (itemViews.length < 3) {
           itemViews.push(
             <View key={i}>
-              <TeamBubble text={loading} />
+              <TeamBubble text={null} teamId={null} />
             </View>
           );
           i--;
         }
-        if (allRows.length < 14) {
+        if (allRows.length < 12) {
           // add the create new team view.
+          itemViews.push(
+            <View key={itemViews.length += 1}>
+              <NewTeam />
+            </View>
+          )
         }
-        alert(itemViews.length);
-
       } catch (err) {
         setError(err);
       } finally {
@@ -85,7 +90,11 @@ export default function TeamPage() {
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type='title'>Welcome {username} {userId} </ThemedText>
+        <ThemedText type='title'>Welcome {username} </ThemedText>
+        <View style={styles.spacer}>
+          <ThemedText>loser</ThemedText>
+        </View>
+        <ThemedText>Current Teams:</ThemedText>
       </ThemedView>
 
       <View style={styles.content}>
@@ -117,12 +126,18 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flexWrap: 'wrap',
     height: '100%',
-    backgroundColor: '#00FF00'
   },
   titleContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     marginTop: '10%',
     marginHorizontal: '3%',
+    marginBottom: '4%',
   },
+  spacer : {
+    height: '5%',
+    width: '100%',
+    backgroundColor: 'red',
+    marginBottom: '3%'
+  }
 });

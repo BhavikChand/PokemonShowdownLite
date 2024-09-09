@@ -13,19 +13,19 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
       }}
-      initialRouteName='teams'>
+      initialRouteName='team'>
       
       <Tabs.Screen
-        name="index"
+        name="default"
         options={{
-          title: 'Home',
+          title: 'Battle',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="teams"
+        name="team"
         options={{
           title: 'Teams',
           tabBarIcon: ({ color, focused }) => (
