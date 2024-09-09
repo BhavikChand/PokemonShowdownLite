@@ -72,7 +72,19 @@ export async function resetDatabase() {
     console.log("Database reset successful");
 }
 
-//TODO: Create getters from the data base for more specific things, such as all teams from a user, all pokemon information from a team, etc.
+/**
+ * Write any sql functions you need around here, we can sort it after we have them all.
+ * When dealing with user inputted sql statements, like username and team name, use db.transaciton (it prevents sql attacks)
+ * Otherwise .execAsync is fine 
+ */
+
+
+export async function getUserTeam(userId: string) {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+    const allRows = await db.execAsync('SELECT * FROM teams WHERE user_id=?', userId);
+    return allRows;
+}
+
 
 //DEBUG FUNCTIONS: These should just be used to ensure that the tables are getting data correctly
 //TODO: Remove these functions in a future PR once more proper functions are implemented.

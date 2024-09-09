@@ -6,7 +6,7 @@ import { UserContext } from '@/components/CurrentUser';
 export default function LoginScreen() {
   const navigation = useNavigation()
   // These are collected from the <CurrentUser> that wraps our app in ./_layout.tsx
-  const {setUsername, setUserId} = useContext(UserContext);
+  const {setUsername, setUserId, userId} = useContext(UserContext);
 
   const [localUsername, setLocalUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -38,6 +38,7 @@ export default function LoginScreen() {
       setUsername(localUsername);
       //TODO: Check username and password through the database to get user id. For now we will always set user as user 0.
       setUserId('0');
+      //side note, this is not an instant update, it takes just a little bit of time. Check teams.tsx to see it.
       navigation.navigate('(tabs)');
     }
   };
