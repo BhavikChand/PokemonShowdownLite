@@ -7,7 +7,7 @@ function CurrentUser({ children }) {
 
     //     [name    ,   setter   ]  useState<type>(starting value)
     const [username, setUsername] = useState<string>('fail');
-    const [userId, setUserId] = useState<string>('-1');
+    const [userId, setUserId] = useState<int>(-1);
     
     const value = { 
         username, setUsername,
