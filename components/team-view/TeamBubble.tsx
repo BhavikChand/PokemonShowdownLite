@@ -21,7 +21,7 @@ export function TeamBubble({ text }) {
           resizeMode="contain"
         />
         <ThemedText>
-          Hbox popoff
+          {text}
         </ThemedText>
       </Pressable>
     </View>
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   rippleHide: {
     overflow: 'hidden',
     borderRadius: 30,
+    height: screenHeight * .10,
   },
   teamcontainer : {
     display: 'flex',

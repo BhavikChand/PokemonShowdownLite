@@ -75,13 +75,13 @@ export async function resetDatabase() {
 /**
  * Write any sql functions you need around here, we can sort it after we have them all.
  * When dealing with user inputted sql statements, like username and team name, use db.transaciton (it prevents sql attacks)
- * Otherwise .execAsync is fine 
+ * Otherwise .getAllAsync is fine 
  */
 
 
-export async function getUserTeam(userId: string) {
+export async function getUserTeam(userId: number) {
     let db = await SQLite.openDatabaseAsync('Showdown');
-    const allRows = await db.execAsync('SELECT * FROM teams WHERE user_id=?', userId);
+    const allRows = await db.getAllAsync('SELECT * FROM teams WHERE user_id=?', userId);
     return allRows;
 }
 
