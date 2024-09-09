@@ -38,8 +38,25 @@ npm run reset-project
 
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Current Database:
-![alt text](image.png)
+## Libraries:
+* react-native
+* react-navigation
+* expo
+* jest
+* typescript
+* babel
+
+## Database:
+![Database](image.png)
+
+## APIs:
+- [GraphQL-Pokemon](https://graphql-pokemon.js.org/introduction/welcome)
+
+## Contributors:
+- [Bhavik Chand](https://github.com/BhavikChand/)
+- [Dylan Uribe](https://github.com/dyluri)
+- [Andy Moreno](https://github.com/Chgunz)
+- [Jorge Moreno](https://github.com/Jorge-Mor)
 
 ## Learn more
 
