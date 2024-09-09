@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '@/components/CurrentUser';
 
 export default function LoginScreen() {
   const navigation = useNavigation()
+  // These are collected from the <CurrentUser> that wraps our app in ./_layout.tsx
+  const { setUsername, setUserId, } = useContext(UserContext);
 
-  const [username, setUsername] = useState('');
+  const [localUsername, setLocalUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
@@ -13,7 +16,7 @@ export default function LoginScreen() {
     let valid = true;
     let tempErrors = {};
 
-    if (!username) {
+    if (!localUsername) {
       tempErrors.username = 'Username is required';
       valid = false;
     }
@@ -32,6 +35,10 @@ export default function LoginScreen() {
 
   const handleSubmit = () => {
     if (validateForm()) {
+      setUsername(localUsername);
+      //TODO: Check username and password through the database to get user id. For now we will always set user as user 0.
+      setUserId(0);
+      //side note, this is not an instant update, it takes just a little bit of time. Check teams.tsx to see it.
       navigation.navigate('(tabs)');
     }
   };
@@ -48,8 +55,8 @@ export default function LoginScreen() {
       <TextInput
         style={[styles.input, styles.inputText]}
         placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        value={localUsername}
+        onChangeText={setLocalUsername}
       />
       {errors.username && <Text style={styles.error}>{errors.username}</Text>}
 
