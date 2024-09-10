@@ -29,7 +29,6 @@ export default function TeamPage() {
         try {
           const delayTime = 500; // Delay to allow the user ID to update
           await new Promise(resolve => setTimeout(resolve, delayTime));
-          console.log("user id is (teams page) ", userId);
 
           let allRows = null;
           allRows = await getUserTeam(userId);

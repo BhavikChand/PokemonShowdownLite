@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '@/components/CurrentUser';
+import { getUser } from '@/components/db-functions/db-functions';
 
 export default function LoginScreen() {
   const navigation = useNavigation()
@@ -33,15 +34,27 @@ export default function LoginScreen() {
     return valid;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    let tempErrors = {}
+
     if (validateForm()) {
-      setUsername(localUsername);
-      //TODO: Check username and password through the database to get user id. For now we will always set user as user 0.
-      setUserId(0);
-      //side note, this is not an instant update, it takes just a little bit of time. Check teams.tsx to see it.
-      navigation.navigate('(tabs)');
+      try {
+        let user = await getUser(localUsername, password);
+        console.log("user is", user);
+  
+        if (user) {
+          setUsername(user.username);
+          setUserId(user.user_id);
+          navigation.navigate('(tabs)');
+        } else {
+          tempErrors.password = "Password or Username was invalid";
+          setErrors(tempErrors);
+        }
+      } catch (error) {
+        console.log('Error fetching user:', error);
+      }
     }
-  };
+  }  
 
   return (
     <View style={styles.container}>

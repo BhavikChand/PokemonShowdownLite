@@ -85,6 +85,23 @@ export async function getUserTeam(userId: number) {
     return allRows;
 }
 
+export async function createUser(username: string, password:string) {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+
+    let returnVal = await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', username, password);
+    return returnVal;
+}
+
+export async function getUser(username:string, password:string) {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+
+    const allRows = await db.getAllAsync('SELECT * FROM user WHERE username=? AND password=?', [username, password]);
+    if (allRows.length > 0) {
+        return allRows[0] as User;
+    } else {
+        return null; 
+    }
+}
 
 //DEBUG FUNCTIONS: These should just be used to ensure that the tables are getting data correctly
 //TODO: Remove these functions in a future PR once more proper functions are implemented.
