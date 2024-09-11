@@ -3,10 +3,9 @@ import { Image, StyleSheet, Platform, Button, Pressable } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { debugGetAllUser, resetDatabase, startDBAndTables } from '@/components/db-functions/db-functions';
+import { debugGetAllUser, getAllGen1PokemonAndStore, getGen1MovesAndStore, resetDatabase, startDBAndTables } from '@/components/db-functions/db-functions';
 import { generateFakeDataDB } from '@/components/db-functions/db-generate-fakes';
 import * as SQLite from 'expo-sqlite'
-import { User } from '@/components/db-functions/db-types';
 
 export default function HomeScreen() {
 
@@ -24,12 +23,16 @@ export default function HomeScreen() {
             let db = await SQLite.openDatabaseAsync('Showdown');
             let query = `SELECT * FROM ${tableName}`;
             let allRows = await db.getAllAsync(query);
+            let count = 0;
 
             let outputString = `Viewing ${tableName}:\n`;
 
             for (let row of allRows) {
+                count += 1;
                 outputString += `${JSON.stringify(row)}\n`;
             }
+            console.log(outputString);
+            console.log(`Count of ${tableName} was ${count}`);
             alert(outputString)
         } catch (error) {
             console.error('Error:', error )
@@ -38,6 +41,9 @@ export default function HomeScreen() {
     }
 
     const debugButtonFakeUsers = async () => {
+        // If need to re create all of the moves and pokemon uncomment and click button
+        // getAllGen1PokemonAndStore();
+        // getGen1MovesAndStore();
         try {
             await generateFakeDataDB();
             alert('fake data made, dont press this again! (reset db if you do)');

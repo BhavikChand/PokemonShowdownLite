@@ -44,21 +44,4 @@ export async function generateFakeDataDB() {
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 16, 95, 105, 115, 125);
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 17, 100, 110, 120, 130);
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 18, 105, 115, 125, 135);
-
-    // Insert 6 entries into the `moves` table
-    await db.runAsync('INSERT INTO moves (move_id, move_name, attack_num, accuracy, is_special, pp, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 10, 'Tackle', 40, 100, 0, 35, 0, 1);
-    await db.runAsync('INSERT INTO moves (move_id, move_name, attack_num, accuracy, is_special, pp, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 20, 'Growl', 0, 100, 0, 40, 0, 2);
-    await db.runAsync('INSERT INTO moves (move_id, move_name, attack_num, accuracy, is_special, pp, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 30, 'Thunderbolt', 90, 100, 1, 15, 0, 3);
-    await db.runAsync('INSERT INTO moves (move_id, move_name, attack_num, accuracy, is_special, pp, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 40, 'Quick Attack', 40, 100, 0, 30, 0, 1);
-    await db.runAsync('INSERT INTO moves (move_id, move_name, attack_num, accuracy, is_special, pp, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 50, 'Ember', 40, 100, 1, 25, 0, 4);
-    await db.runAsync('INSERT INTO moves (move_id, move_name, attack_num, accuracy, is_special, pp, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 60, 'Water Gun', 40, 100, 1, 20, 0, 5);
-    // team 2
-    
-    // Insert 6 entries into the `pokemon_stats` table
-    await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 1, 'Bulbasaur', 'sprite1.png', 45, 49, 65, 49, 65, 45);
-    await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 2, 'Ivysaur', 'sprite2.png', 60, 62, 80, 63, 80, 60);
-    await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 3, 'Venusaur', 'sprite3.png', 80, 82, 100, 83, 100, 80);
-    await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 4, 'Charmander', 'sprite4.png', 39, 52, 60, 43, 50, 65);
-    await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 5, 'Charmeleon', 'sprite5.png', 58, 64, 80, 58, 65, 80);
-    await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 6, 'Charizard', 'sprite6.png', 78, 84, 109, 78, 85, 100);
 }
