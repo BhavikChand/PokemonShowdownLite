@@ -1,4 +1,6 @@
 import * as SQLite from 'expo-sqlite'
+
+import {loadSprites } from './db-functions';
 /**
  * This function generates 3 teams, 2 of which are for user hungryBox
  * 
@@ -61,4 +63,12 @@ export async function generateFakeDataDB() {
     await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 4, 'Charmander', 'sprite4.png', 39, 52, 60, 43, 50, 65);
     await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 5, 'Charmeleon', 'sprite5.png', 58, 64, 80, 58, 65, 80);
     await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 6, 'Charizard', 'sprite6.png', 78, 84, 109, 78, 85, 100);
+
+
+    //sprite checker
+    // tested sprites andy's path
+    let frontSpritePath = 'C:/Software Dev/PokemonShowdownLite/assets/images/pokemon_sprites/front_sprites/abra_front.png';
+    let backSpritePath = 'C:/Software Dev/PokemonShowdownLite/assets/images/pokemon_sprites/back_sprites/abra_back.png';
+
+    await loadSprites();
 }
