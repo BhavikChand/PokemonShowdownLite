@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { createUser, getUser } from '@/components/db-functions/db-functions';
 
 export default function SignUpScreen() {
   const navigation = useNavigation()
@@ -30,6 +31,9 @@ export default function SignUpScreen() {
 
     if (Object.keys(errorMessages).length === 0) {
       console.log('User signed up:', { username, password });
+      // call DB
+      createUser(username, password);
+
       Alert.alert(
         "Success",
         "Account successfully created!",

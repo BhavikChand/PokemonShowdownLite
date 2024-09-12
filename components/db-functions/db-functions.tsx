@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite'
 import { User, Team, DbPokemon, AttackMove, DbPokemonStats } from './db-types';
-
+import * as FileSystem from 'expo-file-system';
 /** 
  * Used when launching the app. Starts the data base.
  */
@@ -48,6 +48,13 @@ export async function startDBAndTables(){
             special_defense INTEGER,
             speed INTEGER
         );
+        
+        CREATE TABLE IF NOT EXISTS sprite_table (
+        pokemon_id INTEGER,
+        front_sprite TEXT,
+        back_sprite TEXT
+        );
+
         `);
         // TODO: Prepopulate the moves data base with all moves,
         // or conisder only adding moves to that db when a pokemon
@@ -72,6 +79,7 @@ export async function resetDatabase() {
     console.log("Database reset successful");
 }
 
+
 /**
  * Write any sql functions you need around here, we can sort it after we have them all.
  * When dealing with user inputted sql statements, like username and team name, use db.transaciton (it prevents sql attacks)
@@ -85,6 +93,23 @@ export async function getUserTeam(userId: number) {
     return allRows;
 }
 
+export async function createUser(username: string, password:string) {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+
+    let returnVal = await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', username, password);
+    return returnVal;
+}
+
+export async function getUser(username:string, password:string) {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+
+    const allRows = await db.getAllAsync('SELECT * FROM user WHERE username=? AND password=?', [username, password]);
+    if (allRows.length > 0) {
+        return allRows[0] as User;
+    } else {
+        return null; 
+    }
+}
 
 export async function getPokemonByName(name:string) {
     let db = await SQLite.openDatabaseAsync('Showdown');
@@ -124,4 +149,29 @@ export async function debugGetAllDbPokemonStats() {
     let db = await SQLite.openDatabaseAsync('Showdown');
     const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats') as DbPokemonStats[];
     return allRows;
+}
+// created function to load the sprites
+export async function loadSprites() {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+
+    // This loops through the whole pokedex starting from 1
+    for (let pokemonId = 1; pokemonId <= 151; pokemonId++) {
+        try {
+            // makes the file using the id (the png files start with the id number of the pokemon)
+            const frontSprite = `${pokemonId}_front.png`; 
+            const backSprite = `${pokemonId}_back.png`;   
+
+            const insertSprite = `INSERT OR REPLACE INTO sprite_table (pokemon_id, front_sprite, back_sprite) 
+                                  VALUES (${pokemonId}, '${frontSprite}', '${backSprite}')`;
+
+
+                await db.execAsync(insertSprite);
+
+                console.log(`Loaded sprites for Pokémon ID ${pokemonId}`);
+            }  
+         catch (error) 
+        {
+            console.error(`Failed to load sprites for Pokémon ID ${pokemonId}:`, error);
+        }
+    }
 }

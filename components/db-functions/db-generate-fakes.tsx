@@ -1,4 +1,6 @@
 import * as SQLite from 'expo-sqlite'
+
+import {loadSprites } from './db-functions';
 /**
  * This function generates 3 teams, 2 of which are for user hungryBox
  * 
@@ -8,12 +10,12 @@ export async function generateFakeDataDB() {
 
     await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'hungryBox', 'qweerteee');
     // Insert 6 entries into the `user` table
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user1', 'pass1');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user2', 'pass2');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user3', 'pass3');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user4', 'pass4');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user5', 'pass5');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user6', 'pass6');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user1', 'password1');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user2', 'password2');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user3', 'password3');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user4', 'password4');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user5', 'password5');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user6', 'password6');
 
     // Insert 6 entries into the `teams` table
     await db.runAsync('INSERT INTO teams (user_id, team_name) VALUES (?, ?)', 0, 'FairyPuff');
@@ -61,4 +63,12 @@ export async function generateFakeDataDB() {
     await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 4, 'Charmander', 'sprite4.png', 39, 52, 60, 43, 50, 65);
     await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 5, 'Charmeleon', 'sprite5.png', 58, 64, 80, 58, 65, 80);
     await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, pokemon_sprite, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 6, 'Charizard', 'sprite6.png', 78, 84, 109, 78, 85, 100);
+
+
+    //sprite checker
+    // tested sprites andy's path
+    let frontSpritePath = 'C:/Software Dev/PokemonShowdownLite/assets/images/pokemon_sprites/front_sprites/abra_front.png';
+    let backSpritePath = 'C:/Software Dev/PokemonShowdownLite/assets/images/pokemon_sprites/back_sprites/abra_back.png';
+
+    await loadSprites();
 }

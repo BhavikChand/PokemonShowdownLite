@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 # PokemonShowdownLite
-=======
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
@@ -50,7 +48,7 @@ This command will move the starter code to the **app-example** directory and cre
 ![Database](image.png)
 
 ## APIs:
-- [GraphQL-Pokemon](https://graphql-pokemon.js.org/introduction/welcome)
+- [PokeAAPI](https://pokeapi.co/)
 
 ## Contributors:
 - [Bhavik Chand](https://github.com/BhavikChand/)
@@ -71,4 +69,3 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
->>>>>>> 68bb6b7 (Initial commit)

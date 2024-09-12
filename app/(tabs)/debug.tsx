@@ -81,6 +81,7 @@ export default function HomeScreen() {
             <Button title='Show all moves' onPress={() => debugButtonViewDB("moves")} color={"grey"} />
             <Button title='Show all pokemon stats' onPress={() => debugButtonViewDB("pokemon_stats")} color={"grey"} />
             <Button title='Reset Database' onPress={debugButtonReset} color={"red"} />
+            <Button title='sprites_check' onPress={() => debugButtonViewDB("sprite_table")} color={"green"} />
 
         </ParallaxScrollView>
     );
