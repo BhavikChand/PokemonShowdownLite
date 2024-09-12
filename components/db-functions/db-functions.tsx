@@ -125,8 +125,6 @@ export async function debugGetAllDbPokemonStats() {
 // created function to load the sprites
 export async function loadSprites() {
     let db = await SQLite.openDatabaseAsync('Showdown');
-    const frontSpritesDir = FileSystem.documentDirectory + 'front_sprites/';
-    const backSpritesDir = FileSystem.documentDirectory + 'back_sprites/'; //checks the apps files
 
     // This loops through the whole pokedex starting from 1
     for (let pokemonId = 1; pokemonId <= 151; pokemonId++) {
@@ -135,30 +133,16 @@ export async function loadSprites() {
             const frontSprite = `${pokemonId}_front.png`; 
             const backSprite = `${pokemonId}_back.png`;   
 
-            // Checks for file needs fixing 
-            const frontSpriteCheck = await FileSystem.getInfoAsync(frontSpritesDir + frontSprite);
-            const backSpriteCheck = await FileSystem.getInfoAsync(backSpritesDir + backSprite);
+            const insertSprite = `INSERT OR REPLACE INTO sprite_table (pokemon_id, front_sprite, back_sprite) 
+                                  VALUES (${pokemonId}, '${frontSprite}', '${backSprite}')`;
 
-            console.log(`Looking for front sprite at: ${frontSpritesDir + frontSprite}`);
-            console.log(`Looking for back sprite at: ${backSpritesDir + backSprite}`);
-            
-            if (frontSpriteCheck.exists && backSpriteCheck.exists) {
-                const insertFrontSprite = `INSERT OR REPLACE INTO sprite_table (pokemon_id, front_sprite) 
-                                           VALUES (${pokemonId}, '${frontSprite}')`;
 
-                const insertBackSprite = `INSERT OR REPLACE INTO sprite_table (pokemon_id, back_sprite) 
-                                          VALUES (${pokemonId}, '${backSprite}')`;
-
-                await db.execAsync(insertFrontSprite);
-                await db.execAsync(insertBackSprite);
+                await db.execAsync(insertSprite);
 
                 console.log(`Loaded sprites for Pokémon ID ${pokemonId}`);
-            } 
-            else 
-            {
-                console.warn(`Sprites not found for Pokémon ID ${pokemonId}`);
-            }
-        } catch (error) {
+            }  
+         catch (error) 
+        {
             console.error(`Failed to load sprites for Pokémon ID ${pokemonId}:`, error);
         }
     }
