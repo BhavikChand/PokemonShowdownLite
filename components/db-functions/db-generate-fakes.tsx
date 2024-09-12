@@ -1,4 +1,6 @@
 import * as SQLite from 'expo-sqlite'
+
+import {getAllGen1PokemonAndStore, getGen1MovesAndStore, loadSprites } from './db-functions';
 /**
  * This function generates 3 teams, 2 of which are for user hungryBox
  * 
@@ -44,4 +46,13 @@ export async function generateFakeDataDB() {
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 16, 95, 105, 115, 125);
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 17, 100, 110, 120, 130);
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 18, 105, 115, 125, 135);
+
+    //sprite checker
+    // tested sprites andy's path
+    let frontSpritePath = 'C:/Software Dev/PokemonShowdownLite/assets/images/pokemon_sprites/front_sprites/abra_front.png';
+    let backSpritePath = 'C:/Software Dev/PokemonShowdownLite/assets/images/pokemon_sprites/back_sprites/abra_back.png';
+
+    await loadSprites();
+    await getGen1MovesAndStore();
+    await getAllGen1PokemonAndStore();
 }

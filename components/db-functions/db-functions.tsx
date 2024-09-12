@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite'
 import { User, Team, DbPokemon, AttackMove, DbPokemonStats } from './db-types';
-
+import * as FileSystem from 'expo-file-system';
 /** 
  * Used when launching the app. Starts the data base.
  */
@@ -46,6 +46,13 @@ export async function startDBAndTables(){
             special_defense INTEGER,
             speed INTEGER
         );
+        
+        CREATE TABLE IF NOT EXISTS sprite_table (
+        pokemon_id INTEGER,
+        front_sprite TEXT,
+        back_sprite TEXT
+        );
+
         `);
 }
 
@@ -64,6 +71,7 @@ export async function resetDatabase() {
 
     console.log("Database reset successful");
 }
+
 
 /**
  * Write any sql functions you need around here, we can sort it after we have them all.
@@ -189,5 +197,47 @@ export async function getGen1MovesAndStore() {
         console.log("Success fetching and storing Gen 1 moves");
     } catch (error) {
         console.error('Error fetching Gen 1 moves:', error);
+    }
+}
+
+// created function to load the sprites
+export async function loadSprites() {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+    const frontSpritesDir = FileSystem.documentDirectory + 'front_sprites/';
+    const backSpritesDir = FileSystem.documentDirectory + 'back_sprites/'; //checks the apps files
+
+    // This loops through the whole pokedex starting from 1
+    for (let pokemonId = 1; pokemonId <= 151; pokemonId++) {
+        try {
+            // makes the file using the id (the png files start with the id number of the pokemon)
+            const frontSprite = `${pokemonId}_front.png`; 
+            const backSprite = `${pokemonId}_back.png`;   
+
+            // Checks for file needs fixing 
+            const frontSpriteCheck = await FileSystem.getInfoAsync(frontSpritesDir + frontSprite);
+            const backSpriteCheck = await FileSystem.getInfoAsync(backSpritesDir + backSprite);
+
+            console.log(`Looking for front sprite at: ${frontSpritesDir + frontSprite}`);
+            console.log(`Looking for back sprite at: ${backSpritesDir + backSprite}`);
+            
+            if (frontSpriteCheck.exists && backSpriteCheck.exists) {
+                const insertFrontSprite = `INSERT OR REPLACE INTO sprite_table (pokemon_id, front_sprite) 
+                                           VALUES (${pokemonId}, '${frontSprite}')`;
+
+                const insertBackSprite = `INSERT OR REPLACE INTO sprite_table (pokemon_id, back_sprite) 
+                                          VALUES (${pokemonId}, '${backSprite}')`;
+
+                await db.execAsync(insertFrontSprite);
+                await db.execAsync(insertBackSprite);
+
+                console.log(`Loaded sprites for Pokémon ID ${pokemonId}`);
+            } 
+            else 
+            {
+                console.warn(`Sprites not found for Pokémon ID ${pokemonId}`);
+            }
+        } catch (error) {
+            console.error(`Failed to load sprites for Pokémon ID ${pokemonId}:`, error);
+        }
     }
 }

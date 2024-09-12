@@ -3,7 +3,7 @@ import { Image, StyleSheet, Platform, Button, Pressable } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { debugGetAllUser, getAllGen1PokemonAndStore, getGen1MovesAndStore, resetDatabase, startDBAndTables } from '@/components/db-functions/db-functions';
+import { debugGetAllUser, resetDatabase, startDBAndTables } from '@/components/db-functions/db-functions';
 import { generateFakeDataDB } from '@/components/db-functions/db-generate-fakes';
 import * as SQLite from 'expo-sqlite'
 
@@ -41,9 +41,6 @@ export default function HomeScreen() {
     }
 
     const debugButtonFakeUsers = async () => {
-        // If need to re create all of the moves and pokemon uncomment and click button
-        // getAllGen1PokemonAndStore();
-        // getGen1MovesAndStore();
         try {
             await generateFakeDataDB();
             alert('fake data made, dont press this again! (reset db if you do)');
@@ -87,6 +84,7 @@ export default function HomeScreen() {
             <Button title='Show all moves' onPress={() => debugButtonViewDB("moves")} color={"grey"} />
             <Button title='Show all pokemon stats' onPress={() => debugButtonViewDB("pokemon_stats")} color={"grey"} />
             <Button title='Reset Database' onPress={debugButtonReset} color={"red"} />
+            <Button title='sprites_check' onPress={() => debugButtonViewDB("sprite_table")} color={"green"} />
 
         </ParallaxScrollView>
     );
