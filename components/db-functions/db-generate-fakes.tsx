@@ -10,12 +10,12 @@ export async function generateFakeDataDB() {
 
     await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'hungryBox', 'qweerteee');
     // Insert 6 entries into the `user` table
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user1', 'pass1');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user2', 'pass2');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user3', 'pass3');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user4', 'pass4');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user5', 'pass5');
-    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user6', 'pass6');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user1', 'password1');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user2', 'password2');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user3', 'password3');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user4', 'password4');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user5', 'password5');
+    await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', 'user6', 'password6');
 
     // Insert 6 entries into the `teams` table
     await db.runAsync('INSERT INTO teams (user_id, team_name) VALUES (?, ?)', 0, 'FairyPuff');
