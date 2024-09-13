@@ -17,21 +17,25 @@ export default function DebugScreen() {
             console.error('Error:', error);
         }
     };
-    
+
     const debugButtonViewDB = async (tableName: string) => {
         try {
             let db = await SQLite.openDatabaseAsync('Showdown');
             let query = `SELECT * FROM ${tableName}`;
             let allRows = await db.getAllAsync(query);
+            let count = 0;
 
             let outputString = `Viewing ${tableName}:\n`;
 
             for (let row of allRows) {
+                count += 1;
                 outputString += `${JSON.stringify(row)}\n`;
             }
+            console.log(outputString);
+            console.log(`Count of ${tableName} was ${count}`);
             alert(outputString)
         } catch (error) {
-            console.error('Error:', error )
+            console.error('Error:', error)
             alert("there is an error");
         }
     }
