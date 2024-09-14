@@ -26,7 +26,7 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-
+  // Current user is what allows our pages to share props without having to pass them down eachother.
   return (
     <CurrentUser>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

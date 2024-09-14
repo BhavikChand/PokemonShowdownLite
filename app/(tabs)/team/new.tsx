@@ -1,11 +1,9 @@
 import { UserContext } from '@/components/CurrentUser';
-import { getPokemonByName, getUserTeam } from '@/components/db-functions/db-functions';
-import { Team } from '@/components/db-functions/db-types';
-import { TeamBubble } from '@/components/team-view/TeamBubble';
+import { getPokemonByID, getPokemonByName, getUserTeam } from '@/components/db-functions/db-functions';
 import React, { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image } from 'react-native';
+import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image, Modal } from 'react-native';
 import getPokemonImage from '@/components/PokeImgUtil';
 
 
@@ -14,6 +12,8 @@ export default function NewTeamPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [pokemonList, setPokemonList] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [selectedPokemon, setSelectedPokemon] = useState(null); // Track selected Pokémon
 
     // Function to handle the search
     const handleSearch = async () => {
@@ -27,15 +27,32 @@ export default function NewTeamPage() {
         setLoading(false);
     };
 
-    // Using DB, create team and add to it. 
-    const handleAddToTeam = (pokemonId) => {
-        alert(`Pokémon with ID ${pokemonId} added to team!`);
+
+    const handleAddToTeamModal = async (pokemonId) => {
+        try {
+            const pokemonStats = await getPokemonByID(pokemonId); 
+            setSelectedPokemon(pokemonStats); 
+            setModalVisible(true); // Show the modal
+        } catch (error) {
+            console.error('Error fetching Pokémon stats:', error);
+        }
     };
+
+
+    const closeModal = () => {
+        setSelectedPokemon(null); // Clear selected Pokémon
+        setModalVisible(false); // Close modal
+    };
+
+    const addToTeam = () => {
+        // TODO: Add to some sort of temp team and then go to different screen to add the moves
+    }
+
 
     return (
         <ThemedView style={styles.container}>
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type='title'>Welcome To the team builder</ThemedText>
+                <ThemedText type='title'>Team builder</ThemedText>
             </ThemedView>
             <View style={styles.searchContainer}>
                 <TextInput
@@ -63,16 +80,43 @@ export default function NewTeamPage() {
                                     resizeMode="contain"
                                 />
                                 <Text style={styles.inputText}>{item.pokemon_name}</Text>
-                                <Button title="View" onPress={() => handleAddToTeam(item.pokemon_id)} />
+                                <Button title="View" onPress={() => handleAddToTeamModal(item.pokemon_id)} />
                             </View>
                         );
                     }}
                 />
             )}
+            {/* Modal for displaying Pokémon details */}
+            {selectedPokemon && (
+                <Modal
+                    visible={isModalVisible}
+                    animationType='slide'
+                    transparent={true}
+                    onRequestClose={closeModal}
+                >
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.modalContent}>
+                            <ThemedText style={styles.modalText} type='title'>{selectedPokemon.pokemon_name}</ThemedText>
+                            <Image
+                                source={getPokemonImage(selectedPokemon.pokemon_id)}
+                                style={styles.pokemonImage}
+                                resizeMode="contain"
+                            />
+                            <ThemedText style={styles.modalText}>HP: {selectedPokemon.hp}</ThemedText>
+                            <ThemedText style={styles.modalText}>Attack: {selectedPokemon.attack}</ThemedText>
+                            <ThemedText style={styles.modalText}>Defense: {selectedPokemon.defense}</ThemedText>
+                            <ThemedText style={styles.modalText}>Special Attack: {selectedPokemon.special_attack}</ThemedText>
+                            <ThemedText style={styles.modalText}>Special Defense: {selectedPokemon.special_defense}</ThemedText>
+                            <ThemedText style={styles.modalText}>Speed: {selectedPokemon.speed}</ThemedText>
+                            <Button title="Add To Team" onPress={addToTeam} />
+                            <Button title="Close" onPress={closeModal} />
+                        </View>
+                    </View>
+                </Modal>
+            )}
         </ThemedView>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -83,6 +127,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         marginTop: '10%',
         marginBottom: '5%',
+        alignItems: 'center',
     },
     searchContainer: {
         flexDirection: 'row',
@@ -109,7 +154,19 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
     },
-    addButton: {
-        flex: 1, 
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    modalText: {
+        color: 'black',
+    }
 });
