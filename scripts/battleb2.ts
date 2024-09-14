@@ -22,13 +22,15 @@ type Move = {
   isPhysical: boolean;  // True if it's physical, false if special
 };
 
-// Define a type for Pokémon
-type Pokemon = {
-  level: number;
+//Define a type for Pokémon
+type BattlePokemon = {
+  level: 100;
   stats: Stats;
+  move1: Move;
+  move2: Move;
+  move3: Move;
+  move4: Move;
   types: [string, string?]; // Two types for dual-type Pokémon
-  isReflectUp: boolean;
-  isLightScreenUp: boolean;
 };
 
 // Calculate effectiveness for a move against a Pokémon's types
@@ -41,10 +43,10 @@ function calculateTypeEffectiveness(moveType: string, defenderTypes: [string, st
 
 // Stub for type effectiveness lookup
 function getTypeEffectiveness(moveType: string, targetType: string): number {
-  const types = [
-    "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
-    "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon"
-  ];
+  // const types = [
+  //   "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
+  //   "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon"
+  // ];
   
   const typeChart: number[][] = [
     // Normal Fire  Water Electric Grass  Ice  Fight Poison Ground Flying Psychic Bug   Rock  Ghost Dragon
@@ -139,3 +141,5 @@ function calculateDamage(
 
   return baseDamage;
 }
+
+//export battleb2 into react
