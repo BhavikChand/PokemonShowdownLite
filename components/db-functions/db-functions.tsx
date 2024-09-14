@@ -103,6 +103,24 @@ export async function getUser(username:string, password:string) {
     }
 }
 
+export async function getPokemonByName(name:string) {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+
+    const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats WHERE pokemon_name LIKE ?',[`%${name}%`]);
+    if (allRows.length > 0) {
+        return allRows as DbPokemonStats[];
+    } else {
+        return null; 
+    }
+}
+
+export async function getPokemonByID(ID:string) {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+
+    const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats WHERE pokemon_id = ?',ID);
+    return allRows[0] as DbPokemonStats;
+}
+
 //DEBUG FUNCTIONS: These should just be used to ensure that the tables are getting data correctly
 //TODO: Remove these functions in a future PR once more proper functions are implemented.
 

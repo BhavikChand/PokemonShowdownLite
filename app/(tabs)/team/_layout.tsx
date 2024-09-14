@@ -17,23 +17,25 @@ export default function RootLayout() {
     return (
         <NavigationContainer
             independent={true}>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="teams"
-                    component={TeamPage}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="details"
-                    component={TeamDetails}
-                    options={{ title: 'Viewing Team:' }}
-                />
-                <Stack.Screen
-                    name="new"
-                    component={NewTeamPage}
-                    options={{ title: 'Viewing Team:' }}
-                />
-            </Stack.Navigator>
+                <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        name="teams"
+                        component={TeamPage}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="details"
+                        component={TeamDetails}
+                        options={{ title: 'Viewing Team:' }}
+                    />
+                    <Stack.Screen
+                        name="new"
+                        component={NewTeamPage}
+                        options={{ title: 'Viewing Team:' }}
+                    />
+                </Stack.Navigator>
+            </ThemeProvider>
         </NavigationContainer>
 
     );
