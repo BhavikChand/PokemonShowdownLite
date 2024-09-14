@@ -7,6 +7,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+
   return (
     <Tabs
       screenOptions={{
@@ -14,7 +15,7 @@ export default function TabLayout() {
         headerShown: false,
       }}
       initialRouteName='team'>
-      
+
       <Tabs.Screen
         name="default"
         options={{
@@ -34,11 +35,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="settings"
         options={{
-          title: 'Explore',
+          title: 'Settings',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'settings' : 'settings-outline'} color={color} />
           ),
         }}
       />

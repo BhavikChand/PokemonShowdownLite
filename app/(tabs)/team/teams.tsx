@@ -1,13 +1,12 @@
 import { UserContext } from '@/components/CurrentUser';
 import { getUserTeam } from '@/components/db-functions/db-functions';
-import { Team } from '@/components/db-functions/db-types';
 import { NewTeam } from '@/components/team-view/NewTeam';
 import { TeamBubble } from '@/components/team-view/TeamBubble';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import {  ActivityIndicator, StatusBar, StyleSheet, View } from 'react-native';
+import React, { useCallback, useContext, useState } from 'react';
+import { ActivityIndicator, StatusBar, StyleSheet, View } from 'react-native';
 
 export default function TeamPage() {
 
@@ -18,9 +17,8 @@ export default function TeamPage() {
 
   let numTeams = 0;
   let allRows;
-  function sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+
+  // This is lets the page check the database and reload the ui every time this page recieves focus again
   useFocusEffect(
     useCallback(() => {
       async function fetchData() {
@@ -40,7 +38,7 @@ export default function TeamPage() {
             </View>
           ));
 
-          // Populate fake slots if no teams
+          // Populate fake slots if less than 3 teams
           let i = -1;
           while (views.length < 3) {
             views.push(
@@ -69,7 +67,7 @@ export default function TeamPage() {
       fetchData();
     }, [userId]) // Dependencies array
   );
-// 14 poketeam max.
+  // 14 poketeam max.
   if (loading) {
     return (
       <ThemedView style={styles.container}>
@@ -90,9 +88,7 @@ export default function TeamPage() {
     <ThemedView style={styles.container}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type='title'>Welcome {username} </ThemedText>
-        <View style={styles.spacer}>
-          <ThemedText>loser</ThemedText>
-        </View>
+        <View style={styles.spacer} />
         <ThemedText>Current Teams:</ThemedText>
       </ThemedView>
 
@@ -103,7 +99,7 @@ export default function TeamPage() {
       </View>
     </ThemedView>
   );
-  
+
 }
 
 const styles = StyleSheet.create({
@@ -133,7 +129,7 @@ const styles = StyleSheet.create({
     marginHorizontal: '3%',
     marginBottom: '4%',
   },
-  spacer : {
+  spacer: {
     height: '5%',
     width: '100%',
     backgroundColor: 'red',

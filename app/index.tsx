@@ -2,10 +2,14 @@ import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '@/components/CurrentUser';
-import { getUser } from '@/components/db-functions/db-functions';
+import { getUser, startDBAndTables } from '@/components/db-functions/db-functions';
 
 export default function LoginScreen() {
-  const navigation = useNavigation()
+  // When the app starts, start up the database
+  startDBAndTables();
+
+  const navigation = useNavigation();
+
   // These are collected from the <CurrentUser> that wraps our app in ./_layout.tsx
   const { setUsername, setUserId, } = useContext(UserContext);
 
@@ -41,11 +45,12 @@ export default function LoginScreen() {
       try {
         let user = await getUser(localUsername, password);
         console.log("user is", user);
-  
+
         if (user) {
           setUsername(user.username);
           setUserId(user.user_id);
-          navigation.navigate('(tabs)');
+          // . replace prevents users from going back to the sign in screen once logged in.
+          navigation.replace('(tabs)');
         } else {
           tempErrors.password = "Password or Username was invalid";
           setErrors(tempErrors);
@@ -54,14 +59,14 @@ export default function LoginScreen() {
         console.log('Error fetching user:', error);
       }
     }
-  }  
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>login</Text>
 
-      <Image 
-        source={require('@/assets/images/pokemon_logo.png')} 
+      <Image
+        source={require('@/assets/images/pokemon_logo.png')}
         style={styles.logo}
       />
 
@@ -92,7 +97,7 @@ export default function LoginScreen() {
           <Text style={styles.signUpLink}>Sign up</Text>
         </Text>
       </View>
-      
+
     </View>
   );
 };
@@ -142,8 +147,8 @@ const styles = StyleSheet.create({
   logo: {
     width: 200,
     height: 100,
-    alignSelf: 'center', 
-    marginBottom: 100, 
+    alignSelf: 'center',
+    marginBottom: 100,
   },
 
 });
