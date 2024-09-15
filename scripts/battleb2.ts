@@ -22,7 +22,39 @@ type Move = {
   isPhysical: boolean;  // True if it's physical, false if special
 };
 
-//Define a type for Pokémon
+/**
+ * BattlePokemon:
+ * Handles the turn-based battle system by switching between active Pokémon and fetching data from the current battle state (using pokemon.id).
+ *
+ * Process Flow:
+ * 1. Both users select their starting Pokémon (BattlePokemon.id).
+ * 2. Both users choose a move.
+ * 3. Pokémon with higher Speed (pokemon.speed) attacks first.
+ *
+ * Example:
+ * Pikachu (id: 25) vs Bulbasaur (id: 1)
+ * - Pikachu has higher Speed than Bulbasaur.
+ * - Pikachu attacks first with move1.
+ *
+ * Damage Calculation:
+ * 1. Store currDamage = move1.dmg (base damage of the move).
+ * 2. Calculate STAB (Same-Type Attack Bonus) if applicable:
+ *    - If move1.type matches the Pokémon’s type (e.g., Pikachu using an Electric-type move), apply a 1.5x damage multiplier.
+ * 
+ * Turn Resolution:
+ * 1. Apply Pikachu’s damage to Bulbasaur from the current battle state.
+ * 2. Check if Bulbasaur survives.
+ *    - If Bulbasaur survives, it attacks next.
+ *    - If Bulbasaur’s hp <= 0, it faints.
+ *
+ * Next Steps:
+ * - If both Pokémon used their attacks, proceed to a new turn.
+ * - If one Pokémon faints, prompt the player to select another Pokémon if available.
+ * - If all Pokémon on a team have fainted, the player loses the battle.
+ * 
+ * Repeat until one side loses all their Pokémon.
+ */
+
 type BattlePokemon = {
   level: 100;
   stats: Stats;
@@ -87,8 +119,8 @@ function getRandomFactor(): number {
 
 // Gen 1 damage formula
 function calculateDamage(
-  attacker: Pokemon,
-  defender: Pokemon,
+  attacker: BattlePokemon,
+  defender: BattlePokemon,
   move: Move,
   criticalHit: boolean
 ): number {
@@ -106,19 +138,13 @@ function calculateDamage(
   if (criticalHit) {
     attack = move.isPhysical ? attacker.stats.attack : attacker.stats.special;
     defense = move.isPhysical ? defender.stats.defense : defender.stats.special;
-  } else {
-    // Apply Reflect or Light Screen based on move type and conditions
-    if (move.isPhysical && defender.isReflectUp) {
-      defense *= 2;
-    }
-    if (!move.isPhysical && defender.isLightScreenUp) {
-      defense *= 2;
-    }
+  }
 
-    // Explosion or Selfdestruct halves the defender's defense
-    if (move.power === 170 || move.power === 130) { // Assuming Explosion = 170, Selfdestruct = 130
-      defense = Math.max(1, Math.floor(defense / 2));
-    }
+  //Pokemon should die after death causing move.
+  // Explosion or Selfdestruct halves the defender's defense (Ignore this comment for halving defense.)
+  if (move.power === 170 || move.power === 130) { // Assuming Explosion = 170, Selfdestruct = 130
+    // defense = Math.max(1, Math.floor(defense / 2));
+    attacker.status = false; //(faint)
   }
 
   // Step 3: Calculate base damage (simplified for readability)
