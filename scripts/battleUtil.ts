@@ -1,18 +1,17 @@
 import * as SQLite from 'expo-sqlite'
 import { debugGetAllTeams } from '../components/db-functions/db-functions.js';
 debugGetAllTeams
-//TODO Call Teams from Database: 
-//TODO Create new GetAllTeams Query Where the user.id wants the pkmn team
-//TODO Also grab the pokemon from the table. Those pokemon have moves =>
-//TODO Also grab the move ids ... atknum, special, pp, type (Those 4 all I need)
+//TODO Pass in currPlayerPkmn 's Data
+//TODO Pass in currOpponentPkmn 's Data
+//TODO Pass in Faints Array.
 
 // Define the type for Pokémon stats
 type Stats = {
+  hp: number;
   attack: number;
   defense: number;
   special: number;
   speed: number;
-  hp: number;
 };
 
 // Define a type for Move
@@ -66,7 +65,7 @@ type BattlePokemon = {
 };
 
 // Calculate effectiveness for a move against a Pokémon's types
-function calculateTypeEffectiveness(moveType: string, defenderTypes: [string, string?]): number {
+export function calculateTypeEffectiveness(moveType: string, defenderTypes: [string, string?]): number {
   const effectiveness1 = getTypeEffectiveness(moveType, defenderTypes[0]);
   const effectiveness2 = defenderTypes[1] ? getTypeEffectiveness(moveType, defenderTypes[1]) : 1;
   
@@ -74,7 +73,7 @@ function calculateTypeEffectiveness(moveType: string, defenderTypes: [string, st
 }
 
 // Stub for type effectiveness lookup
-function getTypeEffectiveness(moveType: string, targetType: string): number {
+export function getTypeEffectiveness(moveType: string, targetType: string): number {
   
   const types = [
     "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
@@ -123,17 +122,17 @@ function getTypeEffectiveness(moveType: string, targetType: string): number {
 }
 
 // Calculate STAB
-function calculateSTAB(attackerTypes: [string, string?], moveType: string): number {
+export function calculateSTAB(attackerTypes: [string, string?], moveType: string): number {
   return attackerTypes.includes(moveType) ? 1.5 : 1;
 }
 
 // Calculate random factor between 217 and 255
-function getRandomFactor(): number {
+export function getRandomFactor(): number {
   return Math.floor(Math.random() * (255 - 217 + 1) + 217);
 }
 
 // Gen 1 damage formula
-function calculateDamage(
+export function calculateDamage(
   attacker: BattlePokemon,
   defender: BattlePokemon,
   move: Move,
