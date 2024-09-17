@@ -55,36 +55,6 @@ export async function startDBAndTables(){
         back_sprite TEXT
         );
 
-        CREATE TABLE IF NOT EXISTS Team1 (
-            team1_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            team_id INTEGER NOT NULL,
-            pokemon_id INTEGER NOT NULL,
-            current_hp INTEGER,
-            current_pp1 INTEGER,
-            current_pp2 INTEGER,
-            current_pp3 INTEGER,
-            current_pp4 INTEGER,
-            FOREIGN KEY (user_id) REFERENCES user(user_id),
-            FOREIGN KEY (team_id) REFERENCES teams(team_id),
-            FOREIGN KEY (pokemon_id) REFERENCES pokemon(pokemon_id)
-        );
-
-        CREATE TABLE IF NOT EXISTS Team2 (
-            team2_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            team_id INTEGER NOT NULL,
-            pokemon_id INTEGER NOT NULL,
-            current_hp INTEGER,
-            current_pp1 INTEGER,
-            current_pp2 INTEGER,
-            current_pp3 INTEGER,
-            current_pp4 INTEGER,
-            FOREIGN KEY (user_id) REFERENCES user(user_id),
-            FOREIGN KEY (team_id) REFERENCES teams(team_id),
-            FOREIGN KEY (pokemon_id) REFERENCES pokemon(pokemon_id)
-        );
-
         `);
         // TODO: Prepopulate the moves data base with all moves,
         // or conisder only adding moves to that db when a pokemon
