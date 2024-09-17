@@ -11,6 +11,7 @@ export type Team = {
     name: string
 }
 
+//TODO, add primary and secondary.
 export type DbPokemon = {
     user_id: number,
     team_id: number,
@@ -18,7 +19,9 @@ export type DbPokemon = {
     move_1: number,
     move_2: number,
     move_3: number,
-    move_4: number
+    move_4: number,
+    primary_type: string,
+    secondary_type: string
 }
 export type AttackMove = {
     move_id: number,
