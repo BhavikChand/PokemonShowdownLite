@@ -5,6 +5,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { getPokemonWithMoves } from '@/components/db-functions/db-functions';
 import getPokemonFrontImage, { getPokemonBackImage } from '@/components/PokeImgUtil';
+import { battle } from '@/scripts/battle';
 
 export default function BattleScreen() {
     const route = useRoute();
@@ -57,6 +58,7 @@ export default function BattleScreen() {
 
     const handleMovePress = (move) => {
         // Implement logic to handle move selection here
+        battle(currentPlayerPokemon, currentOpponentPokemon, move);
         console.log(`Move selected: ${move.move_name}`);
     };
 
