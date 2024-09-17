@@ -4,6 +4,7 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -17,20 +18,20 @@ export default function TabLayout() {
       initialRouteName='team'>
 
       <Tabs.Screen
-        name="default"
-        options={{
-          title: 'Battle',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="team"
         options={{
           title: 'Teams',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="battle"
+        options={{
+          title: 'Battle',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons name="sword-cross" size={24} color={focused ? 'white' : color} />
           ),
         }}
       />

@@ -4,9 +4,9 @@ import * as FileSystem from 'expo-file-system';
 /** 
  * Used when launching the app. Starts the data base.
  */
-export async function startDBAndTables(){
+export async function startDBAndTables() {
     let db = await SQLite.openDatabaseAsync('Showdown');
-    
+
     await db.execAsync(`
         CREATE TABLE IF NOT EXISTS user (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -85,46 +85,85 @@ export async function getUserTeam(userId: number) {
     return allRows;
 }
 
-export async function createUser(username: string, password:string) {
+export async function createUser(username: string, password: string) {
     let db = await SQLite.openDatabaseAsync('Showdown');
 
     let returnVal = await db.runAsync('INSERT INTO user (username, password) VALUES (?, ?)', username, password);
     return returnVal;
 }
 
-export async function getUser(username:string, password:string) {
+export async function getUser(username: string, password: string) {
     let db = await SQLite.openDatabaseAsync('Showdown');
 
     const allRows = await db.getAllAsync('SELECT * FROM user WHERE username=? AND password=?', [username, password]);
     if (allRows.length > 0) {
         return allRows[0] as User;
     } else {
-        return null; 
+        return null;
     }
 }
 
-export async function getPokemonByName(name:string) {
+export async function getPokemonByName(name: string) {
     let db = await SQLite.openDatabaseAsync('Showdown');
 
-    const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats WHERE pokemon_name LIKE ?',[`%${name}%`]);
+    const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats WHERE pokemon_name LIKE ?', [`%${name}%`]);
     if (allRows.length > 0) {
         return allRows as DbPokemonStats[];
     } else {
-        return null; 
+        return null;
     }
 }
 
-export async function getPokemonByID(ID:string) {
+export async function getPokemonByID(ID: string) {
     let db = await SQLite.openDatabaseAsync('Showdown');
 
-    const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats WHERE pokemon_id = ?',ID);
+    const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats WHERE pokemon_id = ?', ID);
     return allRows[0] as DbPokemonStats;
 }
+
+
+export async function getPokemonWithMoves(teamId: string) {
+    let db = await SQLite.openDatabaseAsync('Showdown');
+    const query = `
+        SELECT ps.pokemon_id, ps.pokemon_name, m.move_id, m.move_name, m.attack_num, m.accuracy, m.is_special, m.pp
+        FROM pokemon AS p
+        JOIN pokemon_stats AS ps ON p.pokemon_id = ps.pokemon_id
+        LEFT JOIN moves AS m ON p.move_1 = m.move_id OR p.move_2 = m.move_id OR p.move_3 = m.move_id OR p.move_4 = m.move_id
+        WHERE p.team_id = ?
+    `;
+    const allRows = await db.getAllAsync(query, teamId);
+
+    // Group moves by Pokémon
+    const pokemonMap = new Map();
+    allRows.forEach(row => {
+        if (!pokemonMap.has(row.pokemon_id)) {
+            pokemonMap.set(row.pokemon_id, {
+                pokemon_id: row.pokemon_id,
+                pokemon_name: row.pokemon_name,
+                moves: []
+            });
+        }
+        if (row.move_id) {
+            pokemonMap.get(row.pokemon_id).moves.push({
+                move_id: row.move_id,
+                move_name: row.move_name,
+                attack_num: row.attack_num,
+                accuracy: row.accuracy,
+                is_special: row.is_special,
+                pp: row.pp
+            });
+        }
+    });
+
+    return Array.from(pokemonMap.values());
+}
+
+
 
 //DEBUG FUNCTIONS: These should just be used to ensure that the tables are getting data correctly
 //TODO: Remove these functions in a future PR once more proper functions are implemented.
 
-export async function debugGetAllUser(){
+export async function debugGetAllUser() {
     let db = await SQLite.openDatabaseAsync('Showdown');
     const allRows = await db.getAllAsync('SELECT * FROM user') as User[];
     return allRows;
@@ -177,7 +216,7 @@ export async function getAllGen1PokemonAndStore() {
             let db = await SQLite.openDatabaseAsync('Showdown');
 
             let returnVal = await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                 pokemonId, pokemonName, hp, attack, specialAttack, defense, specialDefense, speed);  
+                pokemonId, pokemonName, hp, attack, specialAttack, defense, specialDefense, speed);
         }
         console.log("Success getting all of pokemon");
         console.log("Total amount of grabbed by poke api was", count);
@@ -193,7 +232,7 @@ export async function getGen1MovesAndStore() {
         const response = await fetch('https://pokeapi.co/api/v2/generation/1/');
         const data = await response.json();
         const moves = data.moves;
-        
+
         for (const move of moves) {
             const moveDetailsResponse = await fetch(move.url);
             const moveDetails = await moveDetailsResponse.json();
@@ -201,7 +240,7 @@ export async function getGen1MovesAndStore() {
             const moveId = moveDetails.id;
             const moveName = moveDetails.name;
             const attackNum = moveDetails.power || 0;
-            const accuracy = moveDetails.accuracy || 0; 
+            const accuracy = moveDetails.accuracy || 0;
             const isSpecial = moveDetails.damage_class.name === 'special';
             const pp = moveDetails.pp;
             const type = moveDetails.type.name;
@@ -226,19 +265,18 @@ export async function loadSprites() {
     for (let pokemonId = 1; pokemonId <= 151; pokemonId++) {
         try {
             // makes the file using the id (the png files start with the id number of the pokemon)
-            const frontSprite = `${pokemonId}_front.png`; 
-            const backSprite = `${pokemonId}_back.png`;   
+            const frontSprite = `${pokemonId}_front.png`;
+            const backSprite = `${pokemonId}_back.png`;
 
             const insertSprite = `INSERT OR REPLACE INTO sprite_table (pokemon_id, front_sprite, back_sprite) 
                                   VALUES (${pokemonId}, '${frontSprite}', '${backSprite}')`;
 
 
-                await db.execAsync(insertSprite);
+            await db.execAsync(insertSprite);
 
-                console.log(`Loaded sprites for Pokémon ID ${pokemonId}`);
-            }  
-         catch (error) 
-        {
+            console.log(`Loaded sprites for Pokémon ID ${pokemonId}`);
+        }
+        catch (error) {
             console.error(`Failed to load sprites for Pokémon ID ${pokemonId}:`, error);
         }
     }

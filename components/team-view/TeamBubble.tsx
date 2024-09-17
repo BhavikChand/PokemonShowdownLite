@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 // Get the screen width
 const screenWidth = Dimensions.get('window').width; 
 const screenHeight = Dimensions.get('window').height;
-export function TeamBubble({ text, teamId }) {
+export function TeamBubble({ text, teamId, screen }) {
   const navigatior = useNavigation();
   if(text === null) {
     return (
@@ -35,7 +35,7 @@ export function TeamBubble({ text, teamId }) {
         ]}
         android_ripple={{ color: 'lightblue' }} // Ripple effect for Android
         onPress={() => 
-          navigatior.navigate('details', { teamId: teamId} )
+          navigatior.navigate(screen, { teamId: teamId} )
         }>
         <Image
           source={require('./../../assets/images/pokeball/default.png')}
