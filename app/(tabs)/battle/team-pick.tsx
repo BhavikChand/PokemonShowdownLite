@@ -1,22 +1,23 @@
 import { UserContext } from '@/components/CurrentUser';
 import { getUserTeam } from '@/components/db-functions/db-functions';
-import { NewTeam } from '@/components/team-view/NewTeam';
 import { TeamBubble } from '@/components/team-view/TeamBubble';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useState } from 'react';
 import { ActivityIndicator, StatusBar, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function TeamPage() {
+
+export default function TeamPick() {
 
   const { username, userId } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   let [itemViews, setItemViews] = useState<any[]>([]);
 
-  let numTeams = 0;
-  let allRows;
+
+  let navigation = useNavigation();
 
   // This is lets the page check the database and reload the ui every time this page recieves focus again
   useFocusEffect(
@@ -30,32 +31,20 @@ export default function TeamPage() {
 
           let allRows = null;
           allRows = await getUserTeam(userId);
-          console.log("finished sql for teams");
+          console.log("finished sql for teams on team pick");
 
           let views = allRows.map(row => (
             <View key={row.team_id}>
-              <TeamBubble text={row.team_name} teamId={row.team_id} screen={'details'} />
+              <TeamBubble text={row.team_name} teamId={row.team_id} screen={'battle-arena'} />
             </View>
           ));
 
-          // Populate fake slots if less than 3 teams
-          let i = -1;
-          while (views.length < 3) {
-            views.push(
-              <View key={i}>
-                <TeamBubble text={null} teamId={null} screen={null} />
-              </View>
-            );
-            i--;
+          // When there are no teams, they need to create one
+          if(views.length == 0){
+            alert("You have no teams, please create at least one");
+            navigation.getParent()?.replace('teams');
           }
-          // add create button if they have less than 12
-          if (allRows.length < 12) {
-            views.push(
-              <View key={views.length += 1}>
-                <NewTeam />
-              </View>
-            );
-          }
+          
           setItemViews(views);
         } catch (err) {
           setError(err);
@@ -86,11 +75,11 @@ export default function TeamPage() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type='title'>Welcome {username} </ThemedText>
-        <View style={styles.spacer} />
-        <ThemedText>Current Teams:</ThemedText>
-      </ThemedView>
+        <ThemedView style={styles.titleContainer}>
+            <ThemedText type='title'>Select A Team To Battle </ThemedText>
+            <View style={styles.spacer} />
+      <ThemedText>Current Teams:</ThemedText>
+    </ThemedView>
 
       <View style={styles.content}>
         <View style={styles.items}>

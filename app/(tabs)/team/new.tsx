@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image, Modal } from 'react-native';
-import getPokemonImage from '@/components/PokeImgUtil';
+import getPokemonFrontImage from '@/components/PokeImgUtil';
 
 
 
@@ -30,8 +30,8 @@ export default function NewTeamPage() {
 
     const handleAddToTeamModal = async (pokemonId) => {
         try {
-            const pokemonStats = await getPokemonByID(pokemonId); 
-            setSelectedPokemon(pokemonStats); 
+            const pokemonStats = await getPokemonByID(pokemonId);
+            setSelectedPokemon(pokemonStats);
             setModalVisible(true); // Show the modal
         } catch (error) {
             console.error('Error fetching Pokémon stats:', error);
@@ -71,11 +71,11 @@ export default function NewTeamPage() {
                     data={pokemonList}
                     keyExtractor={(item) => item.pokemon_id.toString()}
                     renderItem={({ item }) => {
-                        
+
                         return (
                             <View style={styles.pokemonItem}>
                                 <Image
-                                    source={getPokemonImage(item.pokemon_id)}  
+                                    source={getPokemonFrontImage(item.pokemon_id)}
                                     style={styles.pokemonItem}
                                     resizeMode="contain"
                                 />
@@ -98,7 +98,7 @@ export default function NewTeamPage() {
                         <View style={styles.modalContent}>
                             <ThemedText style={styles.modalText} type='title'>{selectedPokemon.pokemon_name}</ThemedText>
                             <Image
-                                source={getPokemonImage(selectedPokemon.pokemon_id)}
+                                source={getPokemonFrontImage(selectedPokemon.pokemon_id)}
                                 style={styles.pokemonImage}
                                 resizeMode="contain"
                             />
@@ -146,9 +146,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     inputText: {
-        flex: 1, 
+        flex: 1,
         color: 'white',
-        textAlign: 'center', 
+        textAlign: 'center',
     },
     pokemonImage: {
         width: 50,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
         backgroundColor: 'white',
