@@ -3,12 +3,10 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import TeamPage from './teams';
-import { TeamDetails } from './details';
-import NewTeamPage from './new';
+import TeamPick from './team-pick';
+import BattleScreen from './battle';
 
 const Stack = createNativeStackNavigator();
-
 
 export default function RootLayout() {
     
@@ -20,19 +18,14 @@ export default function RootLayout() {
                 <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                 <Stack.Navigator>
                     <Stack.Screen
-                        name="teams"
-                        component={TeamPage}
+                        name="battle"
+                        component={TeamPick}
                         options={{ headerShown: false }}
                     />
                     <Stack.Screen
-                        name="details"
-                        component={TeamDetails}
-                        options={{ title: 'Viewing Team:' }}
-                    />
-                    <Stack.Screen
-                        name="new"
-                        component={NewTeamPage}
-                        options={{ title: 'Viewing Team:' }}
+                        name="battle-arena"
+                        component={BattleScreen}
+                        options={{ headerShown: false }}
                     />
                 </Stack.Navigator>
             </ThemeProvider>
