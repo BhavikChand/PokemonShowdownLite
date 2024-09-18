@@ -26,6 +26,8 @@ export async function startDBAndTables() {
             move_2 INTEGER,
             move_3 INTEGER,
             move_4 INTEGER
+            primary_type TEXT,
+            secondary_type TEXT
         );
         CREATE TABLE IF NOT EXISTS moves (
             move_id INTEGER NOT NULL,
@@ -34,7 +36,7 @@ export async function startDBAndTables() {
             accuracy INTEGER,
             is_special BOOLEAN,
             pp INTEGER,
-            type INTEGER
+            type TEXT
         );
         CREATE TABLE IF NOT EXISTS pokemon_stats (
             pokemon_id INTEGER,
