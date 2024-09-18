@@ -23,9 +23,10 @@ export function battle(currPlayerPkmn, currOpponentPkmn, pkmnMove): void {
   // Check speed values, account for speed tie.
 
   //TODO Make speedCheck in util.
+  
   speedCheck()
 
-  
+
 
 
     

@@ -62,6 +62,7 @@ type BattlePokemon = {
   move3: Move;
   move4: Move;
   types: [string, string?]; // Two types for dual-type Pokémon
+  faint: boolean; //False = Alive, True = Dead;
 };
 
 // Calculate effectiveness for a move against a Pokémon's types

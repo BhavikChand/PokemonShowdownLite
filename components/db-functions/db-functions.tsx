@@ -215,6 +215,7 @@ export async function getAllGen1PokemonAndStore() {
             const defense = pokemonData.stats.find((stat: any) => stat.stat.name === 'defense').base_stat;
             const specialDefense = pokemonData.stats.find((stat: any) => stat.stat.name === 'special-defense').base_stat;
             const speed = pokemonData.stats.find((stat: any) => stat.stat.name === 'speed').base_stat;
+            //TODO call api for pokemon types
             let db = await SQLite.openDatabaseAsync('Showdown');
 
             let returnVal = await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
