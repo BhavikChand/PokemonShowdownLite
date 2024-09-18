@@ -1,4 +1,3 @@
-
 export type User = {
     user_id: number,
     username: string,
@@ -11,7 +10,6 @@ export type Team = {
     name: string
 }
 
-//TODO, add primary and secondary.
 export type DbPokemon = {
     user_id: number,
     team_id: number,
@@ -23,6 +21,7 @@ export type DbPokemon = {
     primary_type: string,
     secondary_type: string
 }
+
 export type AttackMove = {
     move_id: number,
     move_name: string,
@@ -32,9 +31,9 @@ export type AttackMove = {
     is_special: number,
     pp: number,
     status: number,
-    // TODO: figure out if we want type to be an enum for ease of reading
-    type: number,
+    type: string,
 }
+
 export type DbPokemonStats = {
     pokemon_id: number,
     pokemon_name: string,
