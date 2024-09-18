@@ -5,23 +5,26 @@ import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image, Modal } from 'react-native';
 import getPokemonFrontImage from '@/components/PokeImgUtil';
+import { useNavigation } from '@react-navigation/native';
 
 
 
-export default function NewTeamPage() {
+const NewTeamPage = () => {
+    // navigation function
+    const navigatior = useNavigation();
+    // page rendering variables
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
-
+    // search related variables
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedPokemon, setSelectedPokemon] = useState(null); // Track selected Pokémon
-
-
+    // team maintainence related variables.
     const [pokemonList, setPokemonList] = useState([]);
     const [localTeamName, setTeamName] = useState('');
 
     // Function to handle team change
     const handleTeamNameChange = (text: string) => {
-        if (text.length <= 20) {
+        if (text.length <= 15) {
             setTeamName(text);
         }
     };
@@ -53,8 +56,9 @@ export default function NewTeamPage() {
         setModalVisible(false); // Close modal
     };
 
-    const addToTeam = () => {
+    const tryAddToTeam = () => {
         // TODO: Add to some sort of temp team and then go to different screen to add the moves
+        navigatior.navigate('pokemonDetails', { pokemonId: selectedPokemon.pokemon_id });
     }
 
     return (
@@ -127,8 +131,8 @@ export default function NewTeamPage() {
                             <ThemedText style={styles.modalText}>Special Attack: {selectedPokemon.special_attack}</ThemedText>
                             <ThemedText style={styles.modalText}>Special Defense: {selectedPokemon.special_defense}</ThemedText>
                             <ThemedText style={styles.modalText}>Speed: {selectedPokemon.speed}</ThemedText>
-                            <Button title="Add To Team" onPress={addToTeam} />
-                            <Button title="Close" onPress={closeModal} />
+                            <Button title="Add To Team" onPress={tryAddToTeam} color={'green'} />
+                            <Button title="Close" onPress={closeModal} color={'red'} />
                         </View>
                     </View>
                 </Modal>
@@ -189,3 +193,5 @@ const styles = StyleSheet.create({
         color: 'black',
     }
 });
+
+export default NewTeamPage;

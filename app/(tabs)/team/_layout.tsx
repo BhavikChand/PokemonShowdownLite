@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TeamPage from './teams';
 import { TeamDetails } from './details';
 import NewTeamPage from './new';
+import PokemonPage from './pokemon';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,11 @@ export default function RootLayout() {
                     <Stack.Screen
                         name="new"
                         component={NewTeamPage}
+                        options={{ title: '' }}
+                    />
+                    <Stack.Screen
+                        name="pokemonDetails"
+                        component={PokemonPage}
                         options={{ title: '' }}
                     />
                 </Stack.Navigator>
