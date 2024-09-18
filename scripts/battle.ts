@@ -1,5 +1,5 @@
 import Pokemon from './pokemon';
-const readlineSync = require('readline-sync');
+// const readlineSync = require('readline-sync');
 
 // 1. Try first: ts-node battle.ts (Run this command inside /scripts directory)
 // 2. Used npm readlineSync to read the ts terminal input (npm install readline-sync => if you don't already have it.)
