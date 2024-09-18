@@ -1,21 +1,25 @@
+import { TeamDetailsProps } from "@/components/db-functions/db-types";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { TeamDetailsProps } from "@/components/Types/types";
 import { useNavigation } from "@react-navigation/native";
-import { View } from "react-native";
+import { Button, View } from "react-native";
 
 
 const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
     const navigatior = useNavigation();
-    let { pokemonId } = route.params;
+    let { pokemonId, currentTeam, learnedMoves } = route.params;
 
-    // might want to figure out why the light mode dark mode stuff broke, low priority. 
+    const goBack = () => {
+        navigatior.navigate('new', { pokemonId: pokemonId, learnedMoves: learnedMoves, currentTeam: currentTeam });
+    }
+
     if (typeof (pokemonId) == 'undefined') {
         return (
             <ThemedView>
                 <ThemedText>
                     Error
                 </ThemedText>
+                <Button title='Cancel' onPress={goBack} color={"red"} />
             </ThemedView>
         )
     }
@@ -23,6 +27,7 @@ const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
         <ThemedView>
             <ThemedText>Hello welcome to team details</ThemedText>
             <ThemedText> {pokemonId} </ThemedText>
+            <Button title='Cancel' onPress={goBack} color={"red"} />
         </ThemedView>
     )
 }

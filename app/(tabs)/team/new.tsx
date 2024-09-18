@@ -6,10 +6,10 @@ import { ThemedText } from '@/components/ThemedText';
 import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image, Modal } from 'react-native';
 import getPokemonFrontImage from '@/components/PokeImgUtil';
 import { useNavigation } from '@react-navigation/native';
+import { TeamDetailsProps } from '@/components/db-functions/db-types';
+import { getAllLearnedMoves } from '@/components/TeamBuilderUtils';
 
-
-
-const NewTeamPage = () => {
+const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
     // navigation function
     const navigatior = useNavigation();
     // page rendering variables
@@ -56,9 +56,10 @@ const NewTeamPage = () => {
         setModalVisible(false); // Close modal
     };
 
-    const tryAddToTeam = () => {
-        // TODO: Add to some sort of temp team and then go to different screen to add the moves
-        navigatior.navigate('pokemonDetails', { pokemonId: selectedPokemon.pokemon_id });
+    const tryAddToTeam = async () => {
+        // Check what moves this mon can possibly learn, pass into the pokemon detail screen
+        let response = await getAllLearnedMoves(selectedPokemon.pokemon_id);
+        navigatior.navigate('pokemonDetails', { pokemonId: selectedPokemon.pokemon_id, learnedMoves: response.moves });
     }
 
     return (
@@ -66,7 +67,7 @@ const NewTeamPage = () => {
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type='title'>Team builder</ThemedText>
                 <ThemedView style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    <Button title='Cancel' onPress={() => alert("cancel")} color={"red"} />
+                    <Button title='Cancel' onPress={() => navigatior.navigate('teams')} color={"red"} />
                     <ThemedText style={{ marginHorizontal: 5 }}>Team:</ThemedText>
                     <TextInput
                         style={[styles.inputText, { marginRight: 2.5 }]}
@@ -74,7 +75,7 @@ const NewTeamPage = () => {
                         value={localTeamName}
                         onChangeText={handleTeamNameChange}
                     />
-                    <Button title='Create Team' onPress={() => alert("cancel")} color={"green"} />
+                    <Button title='Create Team' onPress={() => alert("cant yet")} color={"green"} />
                 </ThemedView>
             </ThemedView>
             <View style={styles.searchContainer}>

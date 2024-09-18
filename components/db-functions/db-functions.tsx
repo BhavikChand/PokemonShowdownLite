@@ -66,6 +66,9 @@ export async function resetDatabase() {
     DROP TABLE IF EXISTS user;
     DROP TABLE IF EXISTS teams;
     DROP TABLE IF EXISTS pokemon;
+    DROP TABLE IF EXISTS moves;
+    DROP TABLE IF EXISTS pokemon_stats;
+    DROP TABLE IF EXISTS sprite_table;
   `);
 
     // Recreate tables

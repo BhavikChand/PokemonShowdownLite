@@ -33,12 +33,12 @@ export default function RootLayout() {
                     <Stack.Screen
                         name="new"
                         component={NewTeamPage}
-                        options={{ title: '' }}
+                        options={{ headerShown: false }}
                     />
                     <Stack.Screen
                         name="pokemonDetails"
                         component={PokemonPage}
-                        options={{ title: '' }}
+                        options={{ headerShown: false }}
                     />
                 </Stack.Navigator>
             </ThemeProvider>
