@@ -72,9 +72,9 @@ export type TeamBuilderPokemon = {
 export interface TeamDetailsProps {
     route: {
         params: {
-            pokemonId: string;
             currentTeam: TeamBuilderPokemon[] | undefined;
             learnedMoves: AttackMove[] | undefined;
+            pokemonStats: DbPokemonStats;
         };
     };
     navigation: any;

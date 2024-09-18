@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image, Modal } from 'react-native';
 import getPokemonFrontImage from '@/components/PokeImgUtil';
 import { useNavigation } from '@react-navigation/native';
-import { TeamDetailsProps } from '@/components/db-functions/db-types';
+import { TeamBuilderPokemon, TeamDetailsProps } from '@/components/db-functions/db-types';
 import { getAllLearnedMoves } from '@/components/TeamBuilderUtils';
 
 const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
@@ -21,6 +21,14 @@ const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
     // team maintainence related variables.
     const [pokemonList, setPokemonList] = useState([]);
     const [localTeamName, setTeamName] = useState('');
+
+    // Get our current team
+    let currentTeam: TeamBuilderPokemon[];
+    if (route.params?.currentTeam === undefined) {
+        currentTeam = [];
+    } else {
+        currentTeam = route.params.currentTeam;
+    }
 
     // Function to handle team change
     const handleTeamNameChange = (text: string) => {
@@ -59,7 +67,14 @@ const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
     const tryAddToTeam = async () => {
         // Check what moves this mon can possibly learn, pass into the pokemon detail screen
         let response = await getAllLearnedMoves(selectedPokemon.pokemon_id);
-        navigatior.navigate('pokemonDetails', { pokemonId: selectedPokemon.pokemon_id, learnedMoves: response.moves });
+        if (response.moreThan4Moves && response.pingedApi) {
+            navigatior.navigate('pokemonDetails', {
+                learnedMoves: response.moves,
+                currentTeam: currentTeam,
+                pokemonStats: selectedPokemon
+            });
+        }
+
     }
 
     return (

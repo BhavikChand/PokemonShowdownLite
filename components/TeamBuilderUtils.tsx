@@ -28,7 +28,7 @@ export async function getAllLearnedMoves(pokemonID: number): Promise<getAllLearn
         // compare with existing db moves:
         let compare = await debugGetAllMoves();
         const filteredMoves = compare.filter(move => learnedMoves.includes(move.move_name));
-        console.log("success, num of moves availible:", filteredMoves.length);
+        console.log("successful filter for gen1 moves, num of moves availible:", filteredMoves.length);
 
         if (filteredMoves.length < 4) {
             // The mon cant have 4 unique moves.
