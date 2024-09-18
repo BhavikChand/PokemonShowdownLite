@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite'
 import { debugGetAllTeams } from '../components/db-functions/db-functions.js';
-debugGetAllTeams
+
 //TODO Pass in currPlayerPkmn 's Data
 //TODO Pass in currOpponentPkmn 's Data
 //TODO Pass in Faints Array.
