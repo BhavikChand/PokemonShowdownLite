@@ -9,12 +9,22 @@ import getPokemonFrontImage from '@/components/PokeImgUtil';
 
 
 export default function NewTeamPage() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [pokemonList, setPokemonList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
+
+    const [searchTerm, setSearchTerm] = useState('');
     const [selectedPokemon, setSelectedPokemon] = useState(null); // Track selected Pokémon
 
+
+    const [pokemonList, setPokemonList] = useState([]);
+    const [localTeamName, setTeamName] = useState('');
+
+    // Function to handle team change
+    const handleTeamNameChange = (text: string) => {
+        if (text.length <= 20) {
+            setTeamName(text);
+        }
+    };
     // Function to handle the search
     const handleSearch = async () => {
         setLoading(true);
@@ -27,8 +37,7 @@ export default function NewTeamPage() {
         setLoading(false);
     };
 
-
-    const handleAddToTeamModal = async (pokemonId) => {
+    const handleAddToTeamModal = async (pokemonId: number) => {
         try {
             const pokemonStats = await getPokemonByID(pokemonId);
             setSelectedPokemon(pokemonStats);
@@ -48,11 +57,21 @@ export default function NewTeamPage() {
         // TODO: Add to some sort of temp team and then go to different screen to add the moves
     }
 
-
     return (
         <ThemedView style={styles.container}>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type='title'>Team builder</ThemedText>
+                <ThemedView style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                    <Button title='Cancel' onPress={() => alert("cancel")} color={"red"} />
+                    <ThemedText style={{ marginHorizontal: 5 }}>Team:</ThemedText>
+                    <TextInput
+                        style={[styles.inputText, { marginRight: 2.5 }]}
+                        placeholder="Name Your Team"
+                        value={localTeamName}
+                        onChangeText={handleTeamNameChange}
+                    />
+                    <Button title='Create Team' onPress={() => alert("cancel")} color={"green"} />
+                </ThemedView>
             </ThemedView>
             <View style={styles.searchContainer}>
                 <TextInput
@@ -79,7 +98,7 @@ export default function NewTeamPage() {
                                     style={styles.pokemonItem}
                                     resizeMode="contain"
                                 />
-                                <Text style={styles.inputText}>{item.pokemon_name}</Text>
+                                <ThemedText>{item.pokemon_name}</ThemedText>
                                 <Button title="View" onPress={() => handleAddToTeamModal(item.pokemon_id)} />
                             </View>
                         );
@@ -125,13 +144,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: '5%',
     },
     titleContainer: {
-        marginTop: '10%',
         marginBottom: '5%',
         alignItems: 'center',
     },
     searchContainer: {
         flexDirection: 'row',
-        marginBottom: '10%',
+        alignItems: 'center'
     },
     searchInput: {
         flex: 1,
@@ -146,9 +164,10 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     inputText: {
-        flex: 1,
         color: 'white',
         textAlign: 'center',
+        borderWidth: 2,
+        borderColor: "grey",
     },
     pokemonImage: {
         width: 50,

@@ -114,7 +114,7 @@ export async function getPokemonByName(name: string) {
     }
 }
 
-export async function getPokemonByID(ID: string) {
+export async function getPokemonByID(ID: number) {
     let db = await SQLite.openDatabaseAsync('Showdown');
 
     const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats WHERE pokemon_id = ?', ID);

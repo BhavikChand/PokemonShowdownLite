@@ -11,13 +11,13 @@ const Stack = createNativeStackNavigator();
 
 
 export default function RootLayout() {
-    
+
     const colorScheme = useColorScheme();
 
     return (
         <NavigationContainer
             independent={true}>
-                <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                 <Stack.Navigator>
                     <Stack.Screen
                         name="teams"
@@ -32,7 +32,7 @@ export default function RootLayout() {
                     <Stack.Screen
                         name="new"
                         component={NewTeamPage}
-                        options={{ title: 'Viewing Team:' }}
+                        options={{ title: '' }}
                     />
                 </Stack.Navigator>
             </ThemeProvider>
