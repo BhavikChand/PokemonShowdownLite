@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Animated } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { getPokemonWithMoves } from '@/components/db-functions/db-functions';
 import getPokemonFrontImage, { getPokemonBackImage } from '@/components/PokeImgUtil';
 import { battle } from '@/scripts/battle';
 
-export default function BattleScreen() {
-    const route = useRoute();
-    const { teamId } = route.params;
+export default function BattleScreen({ route, navigation }) {
+    let { teamId } = route.params;
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -23,8 +22,9 @@ export default function BattleScreen() {
             setError(null);
 
             try {
-                const team = await getPokemonWithMoves("1"); // Replace "1" with actual team ID
-                const opponent = await getPokemonWithMoves("0"); // Replace "0" with actual opponent team ID
+                const team = await getPokemonWithMoves(teamId);
+                const opponent = await getPokemonWithMoves(0); // Replace "0" with actual opponent team ID
+
                 setSelectedTeam(team);
                 setOpponentTeam(opponent);
             } catch (err) {
@@ -54,13 +54,33 @@ export default function BattleScreen() {
     }
 
     const currentPlayerPokemon = selectedTeam[currentPokemonIndex];
-    const currentOpponentPokemon = opponentTeam[currentPokemonIndex];
+    const currentOpponentPokemon = opponentTeam[0];
+
+    console.log(currentPlayerPokemon);
 
     const handleMovePress = (move) => {
         // Implement logic to handle move selection here
         battle(currentPlayerPokemon, currentOpponentPokemon, move);
         console.log(`Move selected: ${move.move_name}`);
     };
+
+    const handleSwitch = () => {
+        console.log("Switching Pokémon");
+        setCurrentPokemonIndex((prevIndex) => (prevIndex + 1) % selectedTeam.length);
+        // TODO : handle when a pokemon fainted
+    };
+
+    // const getHpBarColor = (hp, maxHp) => {
+    //     console.log(hp);
+    //     const hpPercentage = (hp / maxHp) * 100;
+    //     if (hpPercentage > 50) {
+    //         return 'green';
+    //     } else if (hpPercentage > 20) {
+    //         return 'yellow';
+    //     } else {
+    //         return 'red';
+    //     }
+    // };
 
     return (
         <View style={styles.container}>
@@ -71,7 +91,13 @@ export default function BattleScreen() {
                         <>
                             <Text style={styles.pokemonName}>{currentOpponentPokemon.pokemon_name}</Text>
                             <View style={styles.hpBarContainer}>
-                                <View style={[styles.hpBar, { width: `${(currentOpponentPokemon.hp / currentOpponentPokemon.maxHp) * 100}%` }]} />
+                                <View style={[
+                                    styles.hpBar,
+                                    {
+                                        width: `${(currentOpponentPokemon.pokemon_hp / currentOpponentPokemon.pokemon_maxHp) * 100}%`,
+                                        backgroundColor: getHpBarColor(currentOpponentPokemon.pokemon_hp, currentOpponentPokemon.pokemon_maxHp)
+                                    }]}
+                                />
                             </View>
                             <Image source={getPokemonFrontImage(currentOpponentPokemon.pokemon_id)} style={styles.opponentPokemonImage} />
                         </>
@@ -85,7 +111,13 @@ export default function BattleScreen() {
                             <Image source={getPokemonBackImage(currentPlayerPokemon.pokemon_id)} style={styles.playerPokemonImage} />
                             <Text style={styles.pokemonName}>{currentPlayerPokemon.pokemon_name}</Text>
                             <View style={styles.hpBarContainer}>
-                                <View style={[styles.hpBar, { width: `${(currentPlayerPokemon.hp / currentPlayerPokemon.maxHp) * 100}%` }]} />
+                                <View style={[
+                                    styles.hpBar,
+                                    {
+                                        width: `${(currentPlayerPokemon.pokemon_hp / currentPlayerPokemon.pokemon_maxHp) * 100}%`,
+                                        backgroundColor: getHpBarColor(currentPlayerPokemon.pokemon_hp, currentPlayerPokemon.pokemon_maxHp)
+                                    }]}
+                                />
                             </View>
                         </>
                     )}
@@ -109,7 +141,9 @@ export default function BattleScreen() {
                 </View>
 
                 {/* Switch Pokémon Button */}
-                <TouchableOpacity style={styles.switchButton}>
+                <TouchableOpacity
+                    onPress={() => handleSwitch()}
+                    style={styles.switchButton}>
                     <Text style={styles.moveText}>Switch Pokémon</Text>
                 </TouchableOpacity>
             </View>
