@@ -1,15 +1,18 @@
-import { TeamDetailsProps } from "@/components/db-functions/db-types";
+import { AttackMove, TeamDetailsProps } from "@/components/db-functions/db-types";
 import getPokemonFrontImage from "@/components/PokeImgUtil";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { Button, Image, StatusBar, StyleSheet, Text, View } from "react-native";
+import { Button, FlatList, Image, Modal, StatusBar, StyleSheet, Text, View } from "react-native";
 
 
 const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
     const navigatior = useNavigation();
     let { currentTeam, learnedMoves, pokemonStats } = route.params;
+    const [selectedBox, setSelectedBox] = useState(-1);
+    const [isModalVisible, setModalVisible] = useState(false);
+
     const goBack = () => {
         navigatior.replace('new', { currentTeam: currentTeam });
     }
@@ -20,6 +23,32 @@ const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
         </View>
     );
 
+    const openModal = (selectedBox: number) => {
+        setSelectedBox(selectedBox);
+        setModalVisible(true);
+    }
+    const closeModal = () => {
+        setModalVisible(false); // Close modal
+    };
+
+    const onMoveSelect = (moveID: number) => {
+        alert('pressed move id' + moveID + 'this is move box ' + selectedBox);
+    };
+
+    const renderMove = ({ item }: { item: AttackMove }) => (
+        <View style={styles.row}>
+            <View>
+                <Text>{item.move_name}</Text>
+                <Text>Attack: {item.attack_num}</Text>
+                <Text>Accuracy: {item.accuracy}</Text>
+                <Text>PP: {item.pp}</Text>
+                <Text>Status: {item.status}</Text>
+                <Text>Type: {item.type}</Text>
+                <Text>{item.is_special ? 'Special Move' : 'Physical Move'}</Text>
+            </View>
+            <Button title="Select" onPress={() => onMoveSelect(item.move_id)} />
+        </View>
+    );
     if (typeof (learnedMoves) == 'undefined') {
         return (
             <ThemedView style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -70,6 +99,24 @@ const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
                         <GridItem stat={'Sp.Def:'} number={pokemonStats.special_defense} />
                     </View>
                 </View>
+                {/* Modal for displaying availible moves */}
+
+                <Modal
+                    visible={isModalVisible}
+                    animationType='fade'
+                    transparent={true}
+                    onRequestClose={closeModal}
+                >
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.modalContent}>
+                            <FlatList
+                                data={learnedMoves}
+                                keyExtractor={(item) => item.move_id.toString()}
+                                renderItem={renderMove}
+                            />
+                        </View>
+                    </View>
+                </Modal>
 
 
             </View>
@@ -129,9 +176,27 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     moves: {
-        backgroundColor: 'blue',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+        backgroundColor: 'red'
+    },
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    modalText: {
+        color: 'black',
     }
-
 });
 
 export default PokemonPage;
