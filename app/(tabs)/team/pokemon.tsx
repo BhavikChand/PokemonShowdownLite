@@ -4,7 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { Button, FlatList, Image, Modal, StatusBar, StyleSheet, Text, View } from "react-native";
+import { Button, FlatList, Image, Modal, Pressable, StatusBar, StyleSheet, Text, View } from "react-native";
 
 
 const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
@@ -12,11 +12,17 @@ const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
     let { currentTeam, learnedMoves, pokemonStats } = route.params;
     const [selectedBox, setSelectedBox] = useState(-1);
     const [isModalVisible, setModalVisible] = useState(false);
+    const [moveName1, setMoveName1] = useState("_ _ _ _");
+    const [moveName2, setMoveName2] = useState("_ _ _ _");
+    const [moveName3, setMoveName3] = useState("_ _ _ _");
+    const [moveName4, setMoveName4] = useState("_ _ _ _");
 
+    // Passes back the current team to the new.tsx screen.
     const goBack = () => {
         navigatior.replace('new', { currentTeam: currentTeam });
     }
 
+    // A way to show the stats in a uniform manner.
     const GridItem = ({ stat, number }) => (
         <View style={styles.gridItem}>
             <Text style={styles.gridText}>{stat}{number}</Text>
@@ -28,16 +34,17 @@ const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
         setModalVisible(true);
     }
     const closeModal = () => {
-        setModalVisible(false); // Close modal
+        setModalVisible(false);
     };
 
     const onMoveSelect = (moveID: number) => {
         alert('pressed move id' + moveID + 'this is move box ' + selectedBox);
     };
 
-    const renderMove = ({ item }: { item: AttackMove }) => (
-        <View style={styles.row}>
-            <View>
+    // Used in the modal to create a row
+    const renderItem = ({ item }: { item: AttackMove }) => (
+        <View style={[styles.row, { backgroundColor: 'grey', borderRadius: 10, width: '100%', margin: 10 }]}>
+            <View style={[styles.content, { flex: 2 }]}>
                 <Text>{item.move_name}</Text>
                 <Text>Attack: {item.attack_num}</Text>
                 <Text>Accuracy: {item.accuracy}</Text>
@@ -46,9 +53,29 @@ const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
                 <Text>Type: {item.type}</Text>
                 <Text>{item.is_special ? 'Special Move' : 'Physical Move'}</Text>
             </View>
-            <Button title="Select" onPress={() => onMoveSelect(item.move_id)} />
+            <View style={{ flex: 1 }}>
+                <Button title="Select" onPress={() => onMoveSelect(item.move_id)} />
+            </View>
         </View>
     );
+    // Used to show user what move they have selected currently
+    const RenderSelectedMove = ({ boxNumber, moveName }: { boxNumber: number, moveName: string }) => {
+        return (
+            <Pressable
+                style={({ pressed }) => [
+                    styles.moveItem,
+                    { backgroundColor: pressed ? 'black' : '#406370' } // Change color when pressed
+                ]}
+                android_ripple={{ color: 'lightblue' }} // Ripple effect for Android
+                onPress={() =>
+                    openModal(boxNumber)
+                }>
+                <ThemedText>
+                    {moveName}
+                </ThemedText>
+            </Pressable>
+        );
+    }
     if (typeof (learnedMoves) == 'undefined') {
         return (
             <ThemedView style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -59,6 +86,7 @@ const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
             </ThemedView>
         )
     }
+
     return (
         <ThemedView style={styles.container}>
             <View style={styles.titleContainer}>
@@ -90,13 +118,21 @@ const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
                 <View style={{ margin: '10%' }} />
                 <View style={styles.moves}>
                     <View style={styles.row}>
-                        <GridItem stat={'HP:'} number={pokemonStats.hp} />
-                        <GridItem stat={'Att:'} number={pokemonStats.attack} />
+                        <RenderSelectedMove
+                            boxNumber={1}
+                            moveName={moveName1} />
+                        <RenderSelectedMove
+                            boxNumber={2}
+                            moveName={moveName2} />
                     </View>
                     <View style={{ margin: 5 }} />
                     <View style={styles.row}>
-                        <GridItem stat={'Sp.Att:'} number={pokemonStats.special_attack} />
-                        <GridItem stat={'Sp.Def:'} number={pokemonStats.special_defense} />
+                        <RenderSelectedMove
+                            boxNumber={3}
+                            moveName={moveName3} />
+                        <RenderSelectedMove
+                            boxNumber={4}
+                            moveName={moveName4} />
                     </View>
                 </View>
                 {/* Modal for displaying availible moves */}
@@ -109,10 +145,13 @@ const PokemonPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
                 >
                     <View style={styles.modalOverlay}>
                         <View style={styles.modalContent}>
+                            <Button title='Cancel' onPress={closeModal} color={"red"} />
+                            <View style={{ margin: 5 }} />
                             <FlatList
+                                style={{ width: '100%' }}
                                 data={learnedMoves}
                                 keyExtractor={(item) => item.move_id.toString()}
-                                renderItem={renderMove}
+                                renderItem={renderItem}
                             />
                         </View>
                     </View>
@@ -140,6 +179,7 @@ const styles = StyleSheet.create({
     row: {
         alignItems: 'center',
         flexDirection: 'row',
+        flex: 1,
     },
     pokemonImage: {
         width: 100,
@@ -157,7 +197,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         flexWrap: 'nowrap',
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        marginTop: 20,
     },
     statsBox: {
         flex: 5,
@@ -172,6 +213,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: 3,
     },
+    moveItem: {
+        flex: 1,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 3,
+        paddingVertical: '10%',
+    },
     gridText: {
         color: 'white'
     },
@@ -179,8 +228,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center',
         flexWrap: 'nowrap',
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        height: '50%'
     },
     modalOverlay: {
         flex: 1,
@@ -190,7 +241,10 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         backgroundColor: 'white',
-        padding: 20,
+        marginTop: 90,
+        paddingTop: 10,
+        paddingRight: 10,
+        width: '80%',
         borderRadius: 10,
         alignItems: 'center',
     },
