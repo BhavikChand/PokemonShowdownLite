@@ -66,6 +66,8 @@ export async function resetDatabase() {
     DROP TABLE IF EXISTS user;
     DROP TABLE IF EXISTS teams;
     DROP TABLE IF EXISTS pokemon;
+    DROP TABLE IF EXISTS moves;
+    DROP TABLE IF EXISTS pokemon_stats;
   `);
 
     // Recreate tables
@@ -124,10 +126,10 @@ export async function getPokemonByID(ID: string) {
 }
 
 
-export async function getPokemonWithMoves(teamId: string) {
+export async function getPokemonWithMoves(teamId: number) {
     let db = await SQLite.openDatabaseAsync('Showdown');
     const query = `
-        SELECT ps.pokemon_id, ps.pokemon_name, m.move_id, m.move_name, m.attack_num, m.accuracy, m.is_special, m.pp
+        SELECT ps.pokemon_id, ps.pokemon_name, m.move_id, m.move_name, m.attack_num, m.accuracy, m.is_special, m.pp, ps.hp, ps.speed, ps.defense, ps.special_defense
         FROM pokemon AS p
         JOIN pokemon_stats AS ps ON p.pokemon_id = ps.pokemon_id
         LEFT JOIN moves AS m ON p.move_1 = m.move_id OR p.move_2 = m.move_id OR p.move_3 = m.move_id OR p.move_4 = m.move_id
@@ -142,6 +144,11 @@ export async function getPokemonWithMoves(teamId: string) {
             pokemonMap.set(row.pokemon_id, {
                 pokemon_id: row.pokemon_id,
                 pokemon_name: row.pokemon_name,
+                pokemon_hp: row.hp,
+                pokemon_maxHp: row.hp,
+                pokemon_speed: row.speed,
+                pokemon_defence: row.defense,
+                pokemon_special_defence: row.special_defense,
                 moves: []
             });
         }
