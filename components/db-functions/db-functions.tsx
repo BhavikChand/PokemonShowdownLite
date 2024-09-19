@@ -26,8 +26,6 @@ export async function startDBAndTables() {
             move_2 INTEGER,
             move_3 INTEGER,
             move_4 INTEGER
-            primary_type TEXT,
-            secondary_type TEXT
         );
         CREATE TABLE IF NOT EXISTS moves (
             move_id INTEGER NOT NULL,
@@ -46,7 +44,8 @@ export async function startDBAndTables() {
             special_attack INTEGER, 
             defense INTEGER,
             special_defense INTEGER,
-            speed INTEGER
+            speed INTEGER,
+            types TEXT
         );
         
         CREATE TABLE IF NOT EXISTS sprite_table (
@@ -215,11 +214,15 @@ export async function getAllGen1PokemonAndStore() {
             const defense = pokemonData.stats.find((stat: any) => stat.stat.name === 'defense').base_stat;
             const specialDefense = pokemonData.stats.find((stat: any) => stat.stat.name === 'special-defense').base_stat;
             const speed = pokemonData.stats.find((stat: any) => stat.stat.name === 'speed').base_stat;
-            //TODO call api for pokemon types
+            const typesArr = pokemonData.types.map((typeInfo: any) => typeInfo.type.name);
+
+            // Insert Pokémon stats and types into the database
             let db = await SQLite.openDatabaseAsync('Showdown');
 
-            let returnVal = await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                pokemonId, pokemonName, hp, attack, specialAttack, defense, specialDefense, speed);
+            let returnVal = await db.runAsync(
+                'INSERT INTO pokemon_stats (pokemon_id, pokemon_name, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [pokemonId, pokemonName, hp, attack, specialAttack, defense, specialDefense, speed, typesArr.join(',')]
+            );
         }
         console.log("Success getting all of pokemon");
         console.log("Total amount of grabbed by poke api was", count);

@@ -1,6 +1,5 @@
 import Pokemon from './pokemon';
 import battleData from './../app/(tabs)/battle/battle'
-const readlineSync = require('readline-sync');
 
 // 1. Try first: ts-node battle.ts (Run this command inside /scripts directory)
 // 2. Used npm readlineSync to read the ts terminal input (npm install readline-sync => if you don't already have it.)
@@ -11,8 +10,8 @@ const readlineSync = require('readline-sync');
 export function battle(currPlayerPkmn, currOpponentPkmn, pkmnMove): void {
 
   // let pkmnData = battleData.BattleScreen();
-  console.log(pkmnData);
-  console.log(pkmnMove);
+  // console.log(pkmnData);
+  // console.log(pkmnMove);
 
   //Death Array;
   let currPlayerFaint = [false,false,false,false,false,false];
@@ -24,7 +23,7 @@ export function battle(currPlayerPkmn, currOpponentPkmn, pkmnMove): void {
 
   //TODO Make speedCheck in util.
   
-  speedCheck()
+  // speedCheck()
 
 
 
