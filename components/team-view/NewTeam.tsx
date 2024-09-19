@@ -17,19 +17,20 @@ export function NewTeam() {
                     { backgroundColor: pressed ? 'black' : '#404040' } // Change color when pressed
                 ]}
                 android_ripple={{ color: 'black' }} // Ripple effect for Android
-                onPress={() => 
-                  navigatior.navigate('new')
+                onPress={() =>
+                    navigatior.navigate('new', { currentTeam: [], learnedMoves: null, pokemonStats: null });
+                  
                 }>
-                <Image
-                    source={require('./../../assets/images/plus.png')}
-                    style={styles.image}
-                    resizeMode="contain"
-                />
-                <ThemedText>
-                    New Team
-                </ThemedText>
-            </Pressable>
-        </View>
+            <Image
+                source={require('./../../assets/images/plus.png')}
+                style={styles.image}
+                resizeMode="contain"
+            />
+            <ThemedText>
+                New Team
+            </ThemedText>
+        </Pressable>
+        </View >
 
     );
 };

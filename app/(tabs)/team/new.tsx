@@ -21,7 +21,8 @@ const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
     // team maintainence related variables.
     const [pokemonList, setPokemonList] = useState([]);
     const [localTeamName, setTeamName] = useState('');
-
+    // rendering array for the pokemon team.
+    let [itemViews, setItemViews] = useState<any[]>([]);
     // Get our current team
     let currentTeam: TeamBuilderPokemon[];
     if (route.params?.currentTeam === undefined) {
@@ -76,7 +77,9 @@ const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
         }
 
     }
+    const RenderPokemonTeam = async () => {
 
+    }
     return (
         <ThemedView style={styles.container}>
             <ThemedView style={styles.titleContainer}>
@@ -93,6 +96,9 @@ const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
                     <Button title='Create Team' onPress={() => alert("cant yet")} color={"green"} />
                 </ThemedView>
             </ThemedView>
+            <View>
+                { }
+            </View>
             <View style={styles.searchContainer}>
                 <TextInput
                     style={[styles.searchInput, styles.inputText]}

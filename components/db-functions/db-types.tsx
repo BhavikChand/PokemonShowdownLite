@@ -63,18 +63,18 @@ export type TeamBuilderPokemon = {
     special_defense: number,
     speed: number,
     // attacks
-    move_1: AttackMove,
-    move_2: AttackMove,
-    move_3: AttackMove,
-    move_4: AttackMove
+    move_1: number,
+    move_2: number,
+    move_3: number,
+    move_4: number
 }
 
 export interface TeamDetailsProps {
     route: {
         params: {
-            currentTeam: TeamBuilderPokemon[] | undefined;
-            learnedMoves: AttackMove[] | undefined;
-            pokemonStats: DbPokemonStats;
+            currentTeam: TeamBuilderPokemon[];
+            learnedMoves: AttackMove[] | null;
+            pokemonStats: DbPokemonStats | null;
         };
     };
     navigation: any;

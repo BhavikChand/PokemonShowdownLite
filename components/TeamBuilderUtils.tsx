@@ -1,5 +1,5 @@
 import { debugGetAllMoves } from "./db-functions/db-functions";
-import { AttackMove } from "./db-functions/db-types";
+import { AttackMove, DbPokemonStats, TeamBuilderPokemon } from "./db-functions/db-types";
 
 export interface getAllLearnedMovesStatus {
     moreThan4Moves: boolean | null;
@@ -42,4 +42,28 @@ export async function getAllLearnedMoves(pokemonID: number): Promise<getAllLearn
         return { moreThan4Moves: null, moves: null, pingedApi: false };
     }
 
+}
+
+export function createNewTeamBuilderPokemon(pokemonStats: DbPokemonStats, move_1: number, move_2: number, move_3: number, move_4: number)
+    : TeamBuilderPokemon {
+    // Fake attack move(not being added into DB);
+    const defaultTeamBuilderPokemon: TeamBuilderPokemon = {
+        pokemon_id: pokemonStats.pokemon_id,
+        team_id: -1,
+        pokemon_name: pokemonStats.pokemon_name,
+        pokemon_sprite: "Null.png",
+        primary_type: 'Normal',
+        secondary_type: 'None',
+        hp: pokemonStats.hp,
+        attack: pokemonStats.attack,
+        special_attack: pokemonStats.special_attack,
+        defense: pokemonStats.defense,
+        special_defense: pokemonStats.special_defense,
+        speed: pokemonStats.speed,
+        move_1: move_1,
+        move_2: move_2,
+        move_3: move_3,
+        move_4: move_4,
+    };
+    return defaultTeamBuilderPokemon;
 }
