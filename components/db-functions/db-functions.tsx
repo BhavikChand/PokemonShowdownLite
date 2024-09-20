@@ -70,7 +70,6 @@ export async function resetDatabase() {
     DROP TABLE IF EXISTS pokemon;
     DROP TABLE IF EXISTS moves;
     DROP TABLE IF EXISTS pokemon_stats;
-    DROP TABLE IF EXISTS sprite_table;
   `);
 
     // Recreate tables
@@ -147,10 +146,10 @@ export async function getPokemonByID(ID: number) {
 }
 
 
-export async function getPokemonWithMoves(teamId: string) {
+export async function getPokemonWithMoves(teamId: number) {
     let db = await SQLite.openDatabaseAsync('Showdown');
     const query = `
-        SELECT ps.pokemon_id, ps.pokemon_name, m.move_id, m.move_name, m.attack_num, m.accuracy, m.is_special, m.pp
+        SELECT ps.pokemon_id, ps.pokemon_name, m.move_id, m.move_name, m.attack_num, m.accuracy, m.is_special, m.pp, ps.hp, ps.speed, ps.defense, ps.special_defense
         FROM pokemon AS p
         JOIN pokemon_stats AS ps ON p.pokemon_id = ps.pokemon_id
         LEFT JOIN moves AS m ON p.move_1 = m.move_id OR p.move_2 = m.move_id OR p.move_3 = m.move_id OR p.move_4 = m.move_id
@@ -165,6 +164,11 @@ export async function getPokemonWithMoves(teamId: string) {
             pokemonMap.set(row.pokemon_id, {
                 pokemon_id: row.pokemon_id,
                 pokemon_name: row.pokemon_name,
+                pokemon_hp: row.hp,
+                pokemon_maxHp: row.hp,
+                pokemon_speed: row.speed,
+                pokemon_defence: row.defense,
+                pokemon_special_defence: row.special_defense,
                 moves: []
             });
         }
@@ -239,6 +243,7 @@ export async function getAllGen1PokemonAndStore() {
             const defense = pokemonData.stats.find((stat: any) => stat.stat.name === 'defense').base_stat;
             const specialDefense = pokemonData.stats.find((stat: any) => stat.stat.name === 'special-defense').base_stat;
             const speed = pokemonData.stats.find((stat: any) => stat.stat.name === 'speed').base_stat;
+            //TODO call api for pokemon types
             let db = await SQLite.openDatabaseAsync('Showdown');
 
             let returnVal = await db.runAsync('INSERT INTO pokemon_stats (pokemon_id, pokemon_name, hp, attack, special_attack, defense, special_defense, speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',

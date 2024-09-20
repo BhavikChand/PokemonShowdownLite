@@ -47,6 +47,14 @@ export async function generateFakeDataDB() {
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 17, 100, 110, 120, 130);
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 18, 105, 115, 125, 135);
 
+    await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 3, 13, 80, 90, 100, 110);
+    await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 3, 14, 85, 95, 105, 115);
+    await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 3, 15, 90, 100, 110, 120);
+    await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 3, 16, 95, 105, 115, 125);
+    await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 3, 17, 100, 110, 120, 130);
+    await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 3, 18, 105, 115, 125, 135);
+
+
     //sprite checker
     // tested sprites andy's path
     let frontSpritePath = 'C:/Software Dev/PokemonShowdownLite/assets/images/pokemon_sprites/front_sprites/abra_front.png';

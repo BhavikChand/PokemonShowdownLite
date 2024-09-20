@@ -10,6 +10,7 @@ export type Team = {
     name: string
 }
 
+//TODO, add primary and secondary.
 export type DbPokemon = {
     user_id: number,
     team_id: number,
