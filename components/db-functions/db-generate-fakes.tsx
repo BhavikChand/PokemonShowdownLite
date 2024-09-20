@@ -61,6 +61,9 @@ export async function generateFakeDataDB() {
     let backSpritePath = 'C:/Software Dev/PokemonShowdownLite/assets/images/pokemon_sprites/back_sprites/abra_back.png';
 
     await loadSprites();
+    console.log('getting moves');
     await getGen1MovesAndStore();
+    console.log('finished, getting all pokemon stats');
     await getAllGen1PokemonAndStore();
+    console.log('db finished generating');
 }

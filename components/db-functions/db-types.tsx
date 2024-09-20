@@ -46,3 +46,37 @@ export type DbPokemonStats = {
     special_defense: number,
     speed: number
 }
+
+export type TeamBuilderPokemon = {
+    // db querying
+    pokemon_id: number,
+    team_id: number,
+    // name
+    pokemon_name: string,
+    pokemon_sprite: string,
+    // stats
+    primary_type: string,
+    secondary_type: string,
+    hp: number,
+    attack: number,
+    special_attack: number,
+    defense: number,
+    special_defense: number,
+    speed: number,
+    // attacks
+    move_1: number,
+    move_2: number,
+    move_3: number,
+    move_4: number
+}
+
+export interface TeamDetailsProps {
+    route: {
+        params: {
+            currentTeam: TeamBuilderPokemon[];
+            learnedMoves: AttackMove[] | null;
+            pokemonStats: DbPokemonStats | null;
+        };
+    };
+    navigation: any;
+}

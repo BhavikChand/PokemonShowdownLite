@@ -1,24 +1,41 @@
 import { UserContext } from '@/components/CurrentUser';
 import { getPokemonByID, getPokemonByName, getUserTeam } from '@/components/db-functions/db-functions';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image, Modal } from 'react-native';
+import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image, Modal, Pressable } from 'react-native';
 import getPokemonFrontImage from '@/components/PokeImgUtil';
+import { useNavigation } from '@react-navigation/native';
+import { TeamBuilderPokemon, TeamDetailsProps } from '@/components/db-functions/db-types';
+import { addTeamToDatabase, fillUpTeam, getAllLearnedMoves, removePokemon } from '@/components/TeamBuilderUtils';
 
-
-
-export default function NewTeamPage() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [pokemonList, setPokemonList] = useState([]);
+const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
+    // navigation function
+    const navigatior = useNavigation();
+    const { username, userId } = useContext(UserContext);
+    // page rendering variables
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
+    // search related variables
+    const [searchTerm, setSearchTerm] = useState('');
     const [selectedPokemon, setSelectedPokemon] = useState(null); // Track selected Pokémon
+    const [pokemonList, setPokemonList] = useState([]);
+    // Team related variables
+    const [localTeamName, setTeamName] = useState('');
+    const [currentTeam, setCurrentTeam] = useState<TeamBuilderPokemon[]>(route.params.currentTeam);
+    const filledTeam = fillUpTeam(currentTeam);
 
+    // Function to handle team name change
+    const handleTeamNameChange = (text: string) => {
+        if (text.length <= 15) {
+            setTeamName(text);
+        }
+    };
     // Function to handle the search
     const handleSearch = async () => {
         setLoading(true);
         try {
+            console.log(`the term is <${searchTerm}>`);
             const results = await getPokemonByName(searchTerm);
             setPokemonList(results);
         } catch (error) {
@@ -27,8 +44,7 @@ export default function NewTeamPage() {
         setLoading(false);
     };
 
-
-    const handleAddToTeamModal = async (pokemonId) => {
+    const handleAddToTeamModal = async (pokemonId: number) => {
         try {
             const pokemonStats = await getPokemonByID(pokemonId);
             setSelectedPokemon(pokemonStats);
@@ -44,16 +60,88 @@ export default function NewTeamPage() {
         setModalVisible(false); // Close modal
     };
 
-    const addToTeam = () => {
-        // TODO: Add to some sort of temp team and then go to different screen to add the moves
+    const tryAddToTeam = async () => {
+        // Check what moves this mon can possibly learn, pass into the pokemon detail screen
+        if (currentTeam.length >= 6) {
+            alert("You Already Have 6 Pokemon! Remove One!");
+            console.log(currentTeam.length);
+        }
+        else {
+            // Check the moves that are from gen 1
+            let response = await getAllLearnedMoves(selectedPokemon.pokemon_id);
+            closeModal();
+            if (response.moreThan4Moves && response.pingedApi) {
+                navigatior.replace('pokemonDetails', {
+                    learnedMoves: response.moves,
+                    currentTeam: currentTeam,
+                    pokemonStats: selectedPokemon
+                });
+            }
+        }
     }
 
-
+    const createTeam = () => {
+        // Check If we have 6 pokemon yet
+        if (currentTeam.length != 6) {
+            alert("Please Fill Out Your Pokemon Roster!");
+            return;
+        }
+        // Check If The team name is present
+        if (localTeamName.length < 3) {
+            alert("Please Make Your Team Name 3 Characters Or More!");
+            return;
+        }
+        try {
+            addTeamToDatabase(currentTeam, localTeamName, userId);
+            navigatior.replace('teams');
+        } catch (err) {
+            alert('Error with generating team! Please Try again!');
+            console.log(err);
+        }
+    }
     return (
         <ThemedView style={styles.container}>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type='title'>Team builder</ThemedText>
+                <ThemedView style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                    <Button title='Cancel' onPress={() => navigatior.navigate('teams')} color={"red"} />
+                    <ThemedText style={{ marginHorizontal: 5 }}>Team:</ThemedText>
+                    <TextInput
+                        style={[styles.inputText, { marginRight: 2.5 }]}
+                        placeholder="Name Your Team"
+                        value={localTeamName}
+                        onChangeText={handleTeamNameChange}
+                    />
+                    <Button title='Create Team' onPress={createTeam} color={"green"} />
+                </ThemedView>
             </ThemedView>
+            <View style={{ flexDirection: 'row' }}>
+                <FlatList
+                    data={filledTeam}
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                        <View style={{ flexDirection: 'row', marginVertical: 10, flexWrap: 'wrap', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ backgroundColor: 'grey', flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginHorizontal: 2 }}>
+                                {item.pokemon_id !== -1 ? (
+                                    <Pressable
+                                        onPress={() => removePokemon(index, currentTeam, setCurrentTeam)}
+                                        style={{ backgroundColor: '#de333c', width: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}
+                                    >
+                                        <Text style={{ fontSize: 16, color: 'white' }}>{item.pokemon_name}</Text>
+                                        <Text style={{ color: 'black', textAlign: 'center' }}> (Remove)</Text>
+                                    </Pressable>
+                                ) : (
+
+                                    <Text style={{ fontSize: 30 }}>{item.pokemon_name}</Text>
+
+                                )}
+                            </View>
+                        </View>
+                    )}
+                    numColumns={3}
+
+                />
+            </View>
             <View style={styles.searchContainer}>
                 <TextInput
                     style={[styles.searchInput, styles.inputText]}
@@ -79,7 +167,7 @@ export default function NewTeamPage() {
                                     style={styles.pokemonItem}
                                     resizeMode="contain"
                                 />
-                                <Text style={styles.inputText}>{item.pokemon_name}</Text>
+                                <ThemedText>{item.pokemon_name}</ThemedText>
                                 <Button title="View" onPress={() => handleAddToTeamModal(item.pokemon_id)} />
                             </View>
                         );
@@ -108,8 +196,8 @@ export default function NewTeamPage() {
                             <ThemedText style={styles.modalText}>Special Attack: {selectedPokemon.special_attack}</ThemedText>
                             <ThemedText style={styles.modalText}>Special Defense: {selectedPokemon.special_defense}</ThemedText>
                             <ThemedText style={styles.modalText}>Speed: {selectedPokemon.speed}</ThemedText>
-                            <Button title="Add To Team" onPress={addToTeam} />
-                            <Button title="Close" onPress={closeModal} />
+                            <Button title="Add To Team" onPress={tryAddToTeam} color={'green'} />
+                            <Button title="Close" onPress={closeModal} color={'red'} />
                         </View>
                     </View>
                 </Modal>
@@ -125,13 +213,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: '5%',
     },
     titleContainer: {
-        marginTop: '10%',
         marginBottom: '5%',
         alignItems: 'center',
     },
     searchContainer: {
         flexDirection: 'row',
-        marginBottom: '10%',
+        alignItems: 'center'
     },
     searchInput: {
         flex: 1,
@@ -146,9 +233,10 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     inputText: {
-        flex: 1,
         color: 'white',
         textAlign: 'center',
+        borderWidth: 2,
+        borderColor: "grey",
     },
     pokemonImage: {
         width: 50,
@@ -170,3 +258,5 @@ const styles = StyleSheet.create({
         color: 'black',
     }
 });
+
+export default NewTeamPage;

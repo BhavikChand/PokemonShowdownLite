@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite'
-import { User, Team, DbPokemon, AttackMove, DbPokemonStats } from './db-types';
+import { User, Team, DbPokemon, AttackMove, DbPokemonStats, TeamBuilderPokemon } from './db-types';
 import * as FileSystem from 'expo-file-system';
 /** 
  * Used when launching the app. Starts the data base.
@@ -25,7 +25,7 @@ export async function startDBAndTables() {
             move_1 INTEGER,
             move_2 INTEGER,
             move_3 INTEGER,
-            move_4 INTEGER
+            move_4 INTEGER,
             primary_type TEXT,
             secondary_type TEXT
         );
@@ -57,6 +57,8 @@ export async function startDBAndTables() {
 
         `);
 }
+// I realized that all the calls to SQLite.open are causing an eventual stack overflow-like error, use this instead now.
+const db = SQLite.openDatabaseSync('Showdown');
 
 /**resets the database.*/
 export async function resetDatabase() {
@@ -89,6 +91,16 @@ export async function getUserTeam(userId: number) {
     return allRows;
 }
 
+export async function getTeamWithName(userId: number, teamName: string) {
+    const allRows = await db.getAllAsync('SELECT * FROM teams WHERE user_id=? and team_name=?', userId, teamName);
+    return allRows[0];
+}
+
+export async function createNewTeamDB(teamName: string, userId: number) {
+    let returnVal = await db.runAsync('INSERT INTO teams (user_id, team_name) VALUES (?, ?)', userId, teamName);
+    return returnVal;
+}
+
 export async function createUser(username: string, password: string) {
     let db = await SQLite.openDatabaseAsync('Showdown');
 
@@ -107,9 +119,17 @@ export async function getUser(username: string, password: string) {
     }
 }
 
-export async function getPokemonByName(name: string) {
+export async function insertPokemon(userId: number, teamId: number, p: TeamBuilderPokemon) {
     let db = await SQLite.openDatabaseAsync('Showdown');
+    let returnVal = await db.runAsync(`INSERT INTO pokemon 
+        (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4, primary_type, secondary_type) VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        userId, teamId, p.pokemon_id, p.move_1, p.move_2, p.move_4, 'Normal', 'None');
+    return returnVal;
 
+}
+
+export async function getPokemonByName(name: string) {
     const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats WHERE pokemon_name LIKE ?', [`%${name}%`]);
     if (allRows.length > 0) {
         return allRows as DbPokemonStats[];
@@ -118,7 +138,7 @@ export async function getPokemonByName(name: string) {
     }
 }
 
-export async function getPokemonByID(ID: string) {
+export async function getPokemonByID(ID: number) {
     let db = await SQLite.openDatabaseAsync('Showdown');
 
     const allRows = await db.getAllAsync('SELECT * FROM pokemon_stats WHERE pokemon_id = ?', ID);
@@ -166,6 +186,7 @@ export async function getPokemonWithMoves(teamId: number) {
 
     return Array.from(pokemonMap.values());
 }
+
 
 
 
