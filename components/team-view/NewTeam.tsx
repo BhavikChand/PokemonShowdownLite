@@ -18,18 +18,17 @@ export function NewTeam() {
                 ]}
                 android_ripple={{ color: 'black' }} // Ripple effect for Android
                 onPress={() =>
-                    navigatior.navigate('new', { currentTeam: [], learnedMoves: null, pokemonStats: null });
-                  
+                    navigatior.navigate('new', { currentTeam: [], learnedMoves: null, pokemonStats: null })
                 }>
-            <Image
-                source={require('./../../assets/images/plus.png')}
-                style={styles.image}
-                resizeMode="contain"
-            />
-            <ThemedText>
-                New Team
-            </ThemedText>
-        </Pressable>
+                <Image
+                    source={require('./../../assets/images/plus.png')}
+                    style={styles.image}
+                    resizeMode="contain"
+                />
+                <ThemedText>
+                    New Team
+                </ThemedText>
+            </Pressable>
         </View >
 
     );

@@ -1,37 +1,31 @@
 import { UserContext } from '@/components/CurrentUser';
 import { getPokemonByID, getPokemonByName, getUserTeam } from '@/components/db-functions/db-functions';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image, Modal } from 'react-native';
+import { ActivityIndicator, StatusBar, StyleSheet, View, Button, TextInput, FlatList, Text, Image, Modal, Pressable } from 'react-native';
 import getPokemonFrontImage from '@/components/PokeImgUtil';
 import { useNavigation } from '@react-navigation/native';
 import { TeamBuilderPokemon, TeamDetailsProps } from '@/components/db-functions/db-types';
-import { getAllLearnedMoves } from '@/components/TeamBuilderUtils';
+import { addTeamToDatabase, fillUpTeam, getAllLearnedMoves, removePokemon } from '@/components/TeamBuilderUtils';
 
 const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
     // navigation function
     const navigatior = useNavigation();
+    const { username, userId } = useContext(UserContext);
     // page rendering variables
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
     // search related variables
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedPokemon, setSelectedPokemon] = useState(null); // Track selected Pokémon
-    // team maintainence related variables.
     const [pokemonList, setPokemonList] = useState([]);
+    // Team related variables
     const [localTeamName, setTeamName] = useState('');
-    // rendering array for the pokemon team.
-    let [itemViews, setItemViews] = useState<any[]>([]);
-    // Get our current team
-    let currentTeam: TeamBuilderPokemon[];
-    if (route.params?.currentTeam === undefined) {
-        currentTeam = [];
-    } else {
-        currentTeam = route.params.currentTeam;
-    }
+    const [currentTeam, setCurrentTeam] = useState<TeamBuilderPokemon[]>(route.params.currentTeam);
+    const filledTeam = fillUpTeam(currentTeam);
 
-    // Function to handle team change
+    // Function to handle team name change
     const handleTeamNameChange = (text: string) => {
         if (text.length <= 15) {
             setTeamName(text);
@@ -41,6 +35,7 @@ const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
     const handleSearch = async () => {
         setLoading(true);
         try {
+            console.log(`the term is <${searchTerm}>`);
             const results = await getPokemonByName(searchTerm);
             setPokemonList(results);
         } catch (error) {
@@ -67,18 +62,42 @@ const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
 
     const tryAddToTeam = async () => {
         // Check what moves this mon can possibly learn, pass into the pokemon detail screen
-        let response = await getAllLearnedMoves(selectedPokemon.pokemon_id);
-        if (response.moreThan4Moves && response.pingedApi) {
-            navigatior.navigate('pokemonDetails', {
-                learnedMoves: response.moves,
-                currentTeam: currentTeam,
-                pokemonStats: selectedPokemon
-            });
+        if (currentTeam.length >= 6) {
+            alert("You Already Have 6 Pokemon! Remove One!");
+            console.log(currentTeam.length);
         }
-
+        else {
+            // Check the moves that are from gen 1
+            let response = await getAllLearnedMoves(selectedPokemon.pokemon_id);
+            closeModal();
+            if (response.moreThan4Moves && response.pingedApi) {
+                navigatior.replace('pokemonDetails', {
+                    learnedMoves: response.moves,
+                    currentTeam: currentTeam,
+                    pokemonStats: selectedPokemon
+                });
+            }
+        }
     }
-    const RenderPokemonTeam = async () => {
 
+    const createTeam = () => {
+        // Check If we have 6 pokemon yet
+        if (currentTeam.length != 6) {
+            alert("Please Fill Out Your Pokemon Roster!");
+            return;
+        }
+        // Check If The team name is present
+        if (localTeamName.length < 3) {
+            alert("Please Make Your Team Name 3 Characters Or More!");
+            return;
+        }
+        try {
+            addTeamToDatabase(currentTeam, localTeamName, userId);
+            navigatior.replace('teams');
+        } catch (err) {
+            alert('Error with generating team! Please Try again!');
+            console.log(err);
+        }
     }
     return (
         <ThemedView style={styles.container}>
@@ -93,11 +112,35 @@ const NewTeamPage: React.FC<TeamDetailsProps> = ({ route, navigation }) => {
                         value={localTeamName}
                         onChangeText={handleTeamNameChange}
                     />
-                    <Button title='Create Team' onPress={() => alert("cant yet")} color={"green"} />
+                    <Button title='Create Team' onPress={createTeam} color={"green"} />
                 </ThemedView>
             </ThemedView>
-            <View>
-                { }
+            <View style={{ flexDirection: 'row' }}>
+                <FlatList
+                    data={filledTeam}
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                        <View style={{ flexDirection: 'row', marginVertical: 10, flexWrap: 'wrap', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ backgroundColor: 'grey', flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginHorizontal: 2 }}>
+                                {item.pokemon_id !== -1 ? (
+                                    <Pressable
+                                        onPress={() => removePokemon(index, currentTeam, setCurrentTeam)}
+                                        style={{ backgroundColor: '#de333c', width: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}
+                                    >
+                                        <Text style={{ fontSize: 16, color: 'white' }}>{item.pokemon_name}</Text>
+                                        <Text style={{ color: 'black', textAlign: 'center' }}> (Remove)</Text>
+                                    </Pressable>
+                                ) : (
+
+                                    <Text style={{ fontSize: 30 }}>{item.pokemon_name}</Text>
+
+                                )}
+                            </View>
+                        </View>
+                    )}
+                    numColumns={3}
+
+                />
             </View>
             <View style={styles.searchContainer}>
                 <TextInput

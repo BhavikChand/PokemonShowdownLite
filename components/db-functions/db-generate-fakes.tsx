@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite'
 
-import {getAllGen1PokemonAndStore, getGen1MovesAndStore, loadSprites } from './db-functions';
+import { getAllGen1PokemonAndStore, getGen1MovesAndStore, loadSprites } from './db-functions';
 /**
  * This function generates 3 teams, 2 of which are for user hungryBox
  * 
@@ -38,7 +38,7 @@ export async function generateFakeDataDB() {
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 1, 1, 9, 60, 70, 80, 90);
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 1, 1, 10, 65, 75, 85, 95);
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 1, 1, 11, 70, 80, 90, 100);
-    await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 1, 1, 12, 75, 85, 95, 105);    
+    await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 1, 1, 12, 75, 85, 95, 105);
 
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 13, 80, 90, 100, 110);
     await db.runAsync('INSERT INTO pokemon (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4) VALUES (?, ?, ?, ?, ?, ?, ?)', 0, 2, 14, 85, 95, 105, 115);
@@ -53,6 +53,9 @@ export async function generateFakeDataDB() {
     let backSpritePath = 'C:/Software Dev/PokemonShowdownLite/assets/images/pokemon_sprites/back_sprites/abra_back.png';
 
     await loadSprites();
+    console.log('getting moves');
     await getGen1MovesAndStore();
+    console.log('finished, getting all pokemon stats');
     await getAllGen1PokemonAndStore();
+    console.log('db finished generating');
 }
