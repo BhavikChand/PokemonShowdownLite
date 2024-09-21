@@ -58,7 +58,7 @@ Most of my effort went towards getting the login and signup page to work with ou
 + How was the challenge addressed?
   + This challenge was addressed by looking back at my previous homework for Intro to Databases since in that class we often did a lot of table-joining. I was able to find a pretty good example which allowed me to create a usable query for the battle arena. As for the actual arena, addressing this challenge involved a lot of looking at other react native examples and just trial and error. The biggest issue was just trying to position everything which just took time to get right. 
 + Favorite / most interesting part of this project
-  + My favorite part of the project would be 
+  + My favorite part of the project would be working on a team and seeing an idea grow and be executed. Usually, for projects in classes there is a pretty strict prompt to follow that does not allow for ideas to grow, this project was not the case. 
 + If you could do it over, what would you change?
   + I think the biggest issue we had was the scope of our project. Our idea was too big for a 3-week project and I think this gave us less time on more valuable aspects of the prompt. 
 + What is the most valuable thing you learned?
