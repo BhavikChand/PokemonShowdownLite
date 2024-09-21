@@ -1,71 +1,49 @@
 # PokemonShowdownLite
-# Welcome to your Expo app 👋
+Video Walkthough (Not added yet)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+[Github Repo](https://github.com/BhavikChand/PokemonShowdownLite)
 
-## Get started
+## Overview
 
-1. Install dependencies
+This is a Pokemon team builder that lets you choose Pokemon as well as their moves from generation 1. Api is [here](https://pokeapi.co/)
 
-   ```bash
-   npm install
-   ```
+We got styling help for this document from this [guide](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 
-2. Start the app
+## Introduction
+Communication between the teams was managed through daily Slack messages, as well as through weekly Saturday meetings.
+Slack was used for short questions/requests, such as testing out a feature on a branch, or letting the team know a PR was created and needs to be looked at.
 
-   ```bash
-    npx expo start
-   ```
+Originally we had around 20 stories, with the idea being that the battle and team building would take up equal amounts of development time.
 
-In the output, you'll find options to open the app in a
+We split some stories, added some that were missing, and marked stories that were too vague or stretch goals. The end total at about 17 stories completed out of 23. Battle stories had much more difficulty than anticipated.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Team Retrospective:
+### [Bhavik Chand](https://github.com/BhavikChand/)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### [Dylan Uribe](https://github.com/dyluri)
+1. Dylan's pull requests are [here](https://github.com/BhavikChand/PokemonShowdownLite/pulls?q=is%3Apr+is%3Amerged+author%3Adyluri+)
+2. Dylan's issues are [here](https://github.com/BhavikChand/PokemonShowdownLite/issues?q=assignee%3Adyluri)
 
-## Get a fresh project
+#### What was your role / which stories did you work on
+I mostly worked on the database structure, how a user views their teams on the home screen, as well as upgrading the pokemon search screen into the TeamBuilder screens.
 
-When you're ready, run:
++ What was the biggest challenge? 
+  + I would say the biggest challenge was the team builder screens.
++ Why was it a challenge?
+  + It was a lot of moving parts as well as figuring out different aspects of building a team. How do I fill out 6 team slots even if the user only has 2 pokemon in their team, how to ensure that the pokemon are deleted properly, and handling navigation?
++ How was the challenge addressed?
+  + I looked up help for when things when I got stuck. Some of the planning was done on paper to help visualize how the screens looked compared to each other. Having the already existing Pokemon search screen made it very helpful to get started on the rest. After I set up the second screen, I would add 1 more part in the sequence every time until I got to the end. So I would add the modal and fix issues that came up, then include the link to the next page, the link back, the modal on that screen, etc.
++ Favorite / most interesting part of this project
+  + The most interesting part to me was understanding the idea of components in the context of web development. The last class I took we did it mostly using nextjs, and express, so we were still writing mostly html and having each page be semi-unique. Making elements of the screen functions that we can re-use in multiple locations like normal functions is a very clever idea, that seems obvious in hindsight.
++ If you could do it over, what would you change?
+  + I would start work earlier, but I think also better explanation of how the database worked would be good.
++ What is the most valuable thing you learned?
+  + Create examples of how to insert/retrieve/interact with items into your database.
 
-```bash
-npm run reset-project
-```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### [Andy Hernandez](https://github.com/Chgunz)
 
-## Libraries:
-* react-native
-* react-navigation
-* expo
-* jest
-* typescript
-* babel
+### [Jorge Moreno](https://github.com/Jorge-Mor)
 
-## Database:
-![Database](image.png)
+## Conclusion
 
-## APIs:
-- [PokeAAPI](https://pokeapi.co/)
-
-## Contributors:
-- [Bhavik Chand](https://github.com/BhavikChand/)
-- [Dylan Uribe](https://github.com/dyluri)
-- [Andy Moreno](https://github.com/Chgunz)
-- [Jorge Moreno](https://github.com/Jorge-Mor)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
