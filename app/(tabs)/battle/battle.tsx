@@ -70,17 +70,17 @@ export default function BattleScreen({ route, navigation }) {
         // TODO : handle when a pokemon fainted
     };
 
-    // const getHpBarColor = (hp, maxHp) => {
-    //     console.log(hp);
-    //     const hpPercentage = (hp / maxHp) * 100;
-    //     if (hpPercentage > 50) {
-    //         return 'green';
-    //     } else if (hpPercentage > 20) {
-    //         return 'yellow';
-    //     } else {
-    //         return 'red';
-    //     }
-    // };
+    const getHpBarColor = (hp, maxHp) => {
+        console.log(hp);
+        const hpPercentage = (hp / maxHp) * 100;
+        if (hpPercentage > 50) {
+            return 'green';
+        } else if (hpPercentage > 20) {
+            return 'yellow';
+        } else {
+            return 'red';
+        }
+    };
 
     return (
         <View style={styles.container}>
