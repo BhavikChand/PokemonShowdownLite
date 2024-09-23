@@ -22,10 +22,6 @@ We split some stories, added some that were missing, and marked stories that wer
 1. Bhavik's pull requests are [here](https://github.com/BhavikChand/PokemonShowdownLite/pulls?q=is%3Apr+is%3Amerged+author%3ABhavikChand)
 2. Bhavik's issues are [here](https://github.com/BhavikChand/PokemonShowdownLite/issues?q=assignee%3ABhavikChand)
 
-### [Dylan Uribe](https://github.com/dyluri)
-1. Dylan's pull requests are [here](https://github.com/BhavikChand/PokemonShowdownLite/pulls?q=is%3Apr+is%3Amerged+author%3Adyluri+)
-2. Dylan's issues are [here](https://github.com/BhavikChand/PokemonShowdownLite/issues?q=assignee%3Adyluri)
-
 #### What was your role / which stories did you work on
 I worked mostly on the Team Battle feature. The core mechanic of the project that will allow two players to battle each others pokemon.
 
@@ -42,11 +38,30 @@ I worked mostly on the Team Battle feature. The core mechanic of the project tha
 + What is the most valuable thing you learned?
   + The most valuable thing I learned was time management, keeping the scope small than expanding when working on projects and keeping it agile.
 
+### [Dylan Uribe](https://github.com/dyluri)
+1. Dylan's pull requests are [here](https://github.com/BhavikChand/PokemonShowdownLite/pulls?q=is%3Apr+is%3Amerged+author%3Adyluri+)
+2. Dylan's issues are [here](https://github.com/BhavikChand/PokemonShowdownLite/issues?q=assignee%3Adyluri)
+
+#### What was your role / which stories did you work on
+I mostly worked on the database structure, how a user views their teams on the home screen, as well as upgrading the pokemon search screen into the TeamBuilder screens.
+
++ What was the biggest challenge? 
+  + I would say the biggest challenge was the team builder screens.
++ Why was it a challenge?
+  + It was a lot of moving parts as well as figuring out different aspects of building a team. How do I fill out 6 team slots even if the user only has 2 pokemon in their team, how to ensure that the pokemon are deleted properly, and handling navigation?
++ How was the challenge addressed?
+  + I looked up help for when things when I got stuck. Some of the planning was done on paper to help visualize how the screens looked compared to each other. Having the already existing Pokemon search screen made it very helpful to get started on the rest. After I set up the second screen, I would add 1 more part in the sequence every time until I got to the end. So I would add the modal and fix issues that came up, then include the link to the next page, the link back, the modal on that screen, etc.
++ Favorite / most interesting part of this project
+  + The most interesting part to me was understanding the idea of components in the context of web development. The last class I took we did it mostly using nextjs, and express, so we were still writing mostly html and having each page be semi-unique. Making elements of the screen functions that we can re-use in multiple locations like normal functions is a very clever idea, that seems obvious in hindsight.
++ If you could do it over, what would you change?
+  + I would start work earlier, but I think also better explanation of how the database worked would be good.
++ What is the most valuable thing you learned?
+  + Create examples of how to insert/retrieve/interact with items into your database.
 
 ### [Andy Hernandez](https://github.com/Chgunz)
 1. Andy's pull requests are [here](https://github.com/BhavikChand/PokemonShowdownLite/pulls?q=is%3Apr+is%3Amerged+author%3AChgunz)
 2. Andy's issues are [here](https://github.com/BhavikChand/PokemonShowdownLite/issues?q=assignee%3AChgunz) 
-I worked mostly on
+I worked mostly on 🥰
 
 + What was the biggest challenge? 
   + 😀
