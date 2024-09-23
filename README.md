@@ -101,6 +101,11 @@ Most of my effort went towards getting the login and signup page to work with ou
 
 ## Conclusion
 
-Video Walkthough (Not added yet)
-
+- How successful was the project?
+  - We all agree that the project was a bit overscoped with attempting to both team building and battling. We still think that the project is a success since team building is an important part to the pokemon experience.
+- What was the largest victory?
+  - The largest victory was being able to save a user's team to our database, as well as being able to view it. Both features were added at similar times, resulting in a massive jump in functionality all at once. 
+- Final assessment of the project
+  - PokemonShowdownLite was a successful project that achieved its goal of allowing users to build and manage Pokémon teams using data from Generation 1, and gave us a glimpse into the ups and downs of software development in realistic situations when compared to traditional class projects
+  
 [Github Repo](https://github.com/BhavikChand/PokemonShowdownLite)
