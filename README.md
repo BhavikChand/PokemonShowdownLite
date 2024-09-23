@@ -16,6 +16,8 @@ Slack was used for short questions/requests, such as testing out a feature on a 
 Originally we had around 20 stories, with the idea being that the battle and team building would take up equal amounts of development time.
 
 We split some stories, added some that were missing, and marked stories that were too vague or stretch goals. The end total at about 17 stories completed out of 23. Battle stories had much more difficulty than anticipated.
+## Tests:
+![image](https://github.com/user-attachments/assets/cc5a87dc-437b-4637-b2c0-0280e5850250)
 
 ## Team Retrospective:
 ### [Bhavik Chand](https://github.com/BhavikChand/)
@@ -43,7 +45,7 @@ I worked mostly on the Team Battle feature. The core mechanic of the project tha
 2. Dylan's issues are [here](https://github.com/BhavikChand/PokemonShowdownLite/issues?q=assignee%3Adyluri)
 
 #### What was your role / which stories did you work on
-I mostly worked on the database structure, how a user views their teams on the home screen, as well as upgrading the pokemon search screen into the TeamBuilder screens.
+I mostly worked on the database structure, how a user views their teams on the home screen, as well as upgrading the pokemon search screen into the TeamBuilder screens. Added tests.
 
 + What was the biggest challenge? 
   + I would say the biggest challenge was the team builder screens.
