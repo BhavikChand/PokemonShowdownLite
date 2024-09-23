@@ -63,20 +63,20 @@ I mostly worked on the database structure, how a user views their teams on the h
 2. Andy's issues are [here](https://github.com/BhavikChand/PokemonShowdownLite/issues?q=assignee%3AChgunz) 
 
 #### What was your role / which stories did you work on
-I worked mostly on 🥰
+I worked mostly on getting the sprites added to the data base, and creating a teamview that allowed us to veiw our teams pokemon with moves included.
 
 + What was the biggest challenge? 
-  + 😀
+  + I say the biggest challenge was getting the pokemon names, and every single move that comes with the pokemon. Then connecting it to the teamView page it made it a little bit difficult.
 + Why was it a challenge?
-  + 😹.
+  + It was difficult because it was hard to visualize how the data base worked, with the help of gorge we were able to get the job done. 
 + How was the challenge addressed?
-  + 🩵
+  + We decided to really study our data base and after a few hours a function was created to get all the moves and names for the pokemon team.
 + Favorite / most interesting part of this project
-  + 👍
+  + The most interesting part of this project was how everything came together. Each of us working on a different aspect in our porject, and connecting it all together at the end was great.
 + If you could do it over, what would you change?
-  + ✅
+  + I would change the amount of work we did, if i started sooner on our project i feel like we could have accomplished completion of most of the issues and maybe more.
 + What is the most valuable thing you learned?
-  + 🪄
+  + creation of a data base and its working/ interatctions of items in database.
 
 ### [Jorge Moreno](https://github.com/Jorge-Mor)
 
