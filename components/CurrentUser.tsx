@@ -15,7 +15,7 @@ function CurrentUser({ children }) {
     };
 
     return (
-        <UserContext.Provider value={value}>
+        <UserContext.Provider value={value} testID="user-context-provider">
             {children}
         </UserContext.Provider>
     );

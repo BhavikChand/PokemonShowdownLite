@@ -124,7 +124,7 @@ export async function insertPokemon(userId: number, teamId: number, p: TeamBuild
     let returnVal = await db.runAsync(`INSERT INTO pokemon 
         (user_id, team_id, pokemon_id, move_1, move_2, move_3, move_4, primary_type, secondary_type) VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        userId, teamId, p.pokemon_id, p.move_1, p.move_2, p.move_4, 'Normal', 'None');
+        userId, teamId, p.pokemon_id, p.move_1, p.move_2, p.move_3, p.move_4, 'Normal', 'None');
     return returnVal;
 
 }

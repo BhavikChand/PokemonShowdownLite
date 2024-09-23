@@ -21,7 +21,7 @@ export function NewTeam() {
                     navigatior.navigate('new', { currentTeam: [], learnedMoves: null, pokemonStats: null })
                 }>
                 <Image
-                    source={require('./../../assets/images/plus.png')}
+                    source={require('@/assets/images/plus.png')}
                     style={styles.image}
                     resizeMode="contain"
                 />
