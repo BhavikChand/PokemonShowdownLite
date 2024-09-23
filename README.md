@@ -83,7 +83,7 @@ I worked mostly on getting the sprites added to the data base, and creating a te
 1. Jorge's pull requests are [here](https://github.com/BhavikChand/PokemonShowdownLite/pulls?q=is%3Apr+is%3Amerged+author%3Ajor-moreno)
 2. Jorge's issues are [here](https://github.com/BhavikChand/PokemonShowdownLite/issues?q=assignee%3Ajor-moreno)
    
-### What was your role / which stories did you work on
+#### What was your role / which stories did you work on
 Most of my effort went towards getting the login and signup page to work with our DB, getting all of the information we needed from our API into our database (So that we did not overload the API with calls), getting a team search page to be able to search for a pokemon to add to the team and show all of their stats and I worked on a battle arena to display the created teams against an opponent team. 
 
 + What was the biggest challenge?
