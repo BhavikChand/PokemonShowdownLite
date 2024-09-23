@@ -1,5 +1,5 @@
 # PokemonShowdownLite
-Video Walkthough (Not added yet)
+[Video Walkthough](https://www.youtube.com/watch?v=_IUPt0JaUe0)
 
 [Github Repo](https://github.com/BhavikChand/PokemonShowdownLite)
 
